@@ -27,6 +27,8 @@ import time
 
 import pango
 import gtk
+#import gdk
+#from gi.repository import Gdk, Gtk, Pango
 
 from GTG import _, ngettext
 from GTG.gtk.editor import GnomeConfig
@@ -69,6 +71,7 @@ class TaskEditor:
         self.subtask_button.set_tooltip_text(GnomeConfig.SUBTASK_TOOLTIP)
         self.inserttag_button = self.builder.get_object("inserttag")
         self.inserttag_button.set_tooltip_text(GnomeConfig.TAG_TOOLTIP)
+        self.parent_button = self.builder.get_object("parent")
 
         # Create our dictionary and connect it
         dic = {
@@ -97,6 +100,7 @@ class TaskEditor:
             "on_insert_subtask_clicked": self.insert_subtask,
             "on_inserttag_clicked": self.inserttag_clicked,
             "on_move": self.on_move,
+            "on_parent_select": self.on_parent_select,
         }
         self.builder.connect_signals(dic)
         self.window = self.builder.get_object("TaskEditor")
@@ -178,10 +182,16 @@ class TaskEditor:
             if self.config.has_section(tid):
                 if self.config.has_option(tid, "position"):
                     pos_x, pos_y = self.config.get(tid, "position")
-                    self.move(int(pos_x), int(pos_y))
+                    try:
+                        self.move(int(pos_x), int(pos_y))
+                    except ValueError:
+                        print("Invalid task position: %s x %s" % (pos_x, pos_y));
                 if self.config.has_option(tid, "size"):
                     width, height = self.config.get(tid, "size")
-                    self.window.resize(int(width), int(height))
+                    try:
+                        self.window.resize(int(width), int(height))
+                    except ValueError:
+                        print("Invalid task width/height: %s x %s" % (width, height));
 
         self.textview.set_editable(True)
         self.window.show()
@@ -265,6 +275,10 @@ class TaskEditor:
             self.dismissbutton.set_icon_name("gtg-task-dismiss")
         self.donebutton.show()
         self.tasksidebar.show()
+
+        # Refreshing the the parent button
+        has_parents = len(self.task.get_parents()) > 0
+        self.parent_button.set_sensitive(has_parents)
 
         # Refreshing the status bar labels and date boxes
         if status in [Task.STA_DISMISSED, Task.STA_DONE]:
@@ -498,6 +512,35 @@ class TaskEditor:
     def inserttag(self, widget, tag):
         self.textview.insert_tags([tag])
         self.textview.grab_focus()
+
+    def on_parent_select(self, widget):
+        parents = self.task.get_parents()
+
+        if len(parents) == 1:
+            self.vmanager.open_task(parents[0])
+        elif len(parents) > 1:
+            self.show_multiple_parent_popover(parents)
+
+    def show_multiple_parent_popover(self, parent_ids):
+        parent_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        for parent in parent_ids:
+            parent_name = self.req.get_task(parent).get_title()
+            button = Gtk.ToolButton.new(None, parent_name)
+            button.connect("clicked", self.on_parent_item_clicked, parent)
+            parent_box.add(button)
+
+        self.parent_popover = Gtk.Popover.new(self.parent_button)
+        self.parent_popover.add(parent_box)
+        self.parent_popover.set_property("border-width", 0)
+        self.parent_popover.set_position(Gtk.PositionType.BOTTOM)
+        self.parent_popover.set_transitions_enabled(True)
+        self.parent_popover.show_all()
+
+    # On click handler for open_parent_button's menu items
+    def on_parent_item_clicked(self, widget, parent_id):
+        self.vmanager.open_task(parent_id)
+        if self.parent_popover.get_visible():
+            self.parent_popover.hide()
 
     def save(self):
         self.task.set_title(self.textview.get_title())

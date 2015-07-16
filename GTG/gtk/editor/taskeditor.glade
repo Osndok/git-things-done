@@ -61,6 +61,18 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="parent">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">View Parent</property>
+                <property name="stock_id">gtk-go-up</property>
+                <signal name="clicked" handler="on_parent_select"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="insert_subtask">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Insert subtask</property>
