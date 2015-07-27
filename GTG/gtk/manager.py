@@ -37,6 +37,7 @@ from GTG.gtk.preferences import PreferencesDialog
 from GTG.gtk.plugins import PluginsDialog
 from GTG.gtk.dbuswrapper import DBusTaskWrapper
 from GTG.tools import clipboard
+from GTG.core.timer import Timer
 from GTG.core.plugins.engine import PluginEngine
 from GTG.core.plugins.api import PluginAPI
 from GTG.tools.logger import Log
@@ -79,6 +80,10 @@ class Manager(gobject.GObject):
 
         # Shared clipboard
         self.clipboard = clipboard.TaskClipboard(self.req)
+
+        # Initialize Timer
+        self.config = self.req.get_config('browser')
+        self.timer = Timer(self.config)
 
         # Browser (still hidden)
         self.browser = TaskBrowser(self.req, self)

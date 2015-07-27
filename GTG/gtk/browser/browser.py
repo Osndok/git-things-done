@@ -128,11 +128,8 @@ class TaskBrowser(gobject.GObject):
         self.browser_shown = False
 
         # Update the title when a task change
-        self.activetree.register_cllbck('node-added-inview',
-                                        self._update_window_title)
-        self.activetree.register_cllbck('node-deleted-inview',
-                                        self._update_window_title)
-        self._update_window_title()
+        # BUG: TypeError: object at 0x7fdea80db780 of type Timer is not initialized
+        #vmanager.timer.connect('refresh', self.refresh_all_views)
 
 ### INIT HELPER FUNCTIONS #####################################################
 #
@@ -579,18 +576,6 @@ class TaskBrowser(gobject.GObject):
         self.config.set('view', viewname)
         self.vtree_panes['active'].set_col_visible('startdate', not workview)
 
-    def _update_window_title(self, nid=None, path=None, state_id=None):
-        count = self.activetree.get_n_nodes()
-        # Set the title of the window:
-        parenthesis = ""
-        if count == 0:
-            parenthesis = _("no active tasks")
-        else:
-            parenthesis = ngettext("%(tasks)d active task",
-                                   "%(tasks)d active tasks",
-                                   count) % {'tasks': count}
-        self.window.set_title("%s - " % parenthesis + info.NAME)
-
     def _add_page(self, notebook, label, page):
         notebook.append_page(page, label)
         if notebook.get_n_pages() > 1:
@@ -610,6 +595,16 @@ class TaskBrowser(gobject.GObject):
             notebook.set_show_tabs(False)
         elif notebook.get_n_pages() == 0:
             notebook.hide()
+
+    def refresh_all_views(self, timer):
+        active_tree = self.req.get_tasks_tree(name='active', refresh=False)
+        active_tree.refresh_all()
+
+        workview_tree = self.req.get_tasks_tree(name='workview', refresh=False)
+        workview_tree.refresh_all()
+
+        closed_tree = self.req.get_tasks_tree(name='closed', refresh=False)
+        closed_tree.refresh_all()
 
 ### SIGNAL CALLBACKS ##########################################################
 # Typically, reaction to user input & interactions with the GUI
