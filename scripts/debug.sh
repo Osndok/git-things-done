@@ -6,6 +6,7 @@ if [ $UID -eq 0 ]; then
     exit
 fi
 
+PYTHON_EXE=python3
 args="--no-crash-handler"
 dataset="default"
 norun=0
@@ -37,7 +38,8 @@ done
 if [  $dataset != "default" -a ! -d "./tmp/$dataset" ]
 then
     echo "Copying $dataset dataset to ./tmp/"
-    cp -r test/data/$dataset tmp/
+    mkdir -p tmp
+    cp -r data/test-data/$dataset tmp/
 fi
 
 echo "Setting XDG vars to use $dataset dataset."
@@ -47,33 +49,38 @@ export XDG_CONFIG_HOME="./tmp/$dataset/xdg/config"
 
 # Title has to be passed to GTG directly, not through $args
 # title could be more word, and only the first word would be taken
-if [ "$title" = "" ]
+if [ -z "$title" ]
 then
-    title="Dev GTG: $(basename `pwd`)"
+    title="Dev GTG: $(basename $PWD)"
     if [ "$dataset" != "default" ]
     then
         title="$title ($dataset dataset)"
     fi
 fi
 
-if [ $norun -eq 0 ]; then
+#if [ $norun -eq 0 ]; then
     # Check for liblarch
-    if ! ./GTG/tools/import_liblarch.py $liblarchArgs; then
-        echo
-        echo -n "Download latest liblarch? [y/N] "
-        read answer
-        if [ "$answer" = "y" -o "$answer" = "Y" -o "$answer" = "yes" ]; then
-            git clone https://github.com/liblarch/liblarch ../liblarch
-        else
-            exit 1
-        fi
-    fi
+#    if ! ./GTG/tools/import_liblarch.py $liblarchArgs; then
+#        echo
+#        echo -n "Download latest liblarch? [y/N] "
+#        read answer
+#        if [ "$answer" = "y" -o "$answer" = "Y" -o "$answer" = "yes" ]; then
+#            git clone https://github.com/liblarch/liblarch ../liblarch
+#        else
+#            exit 1
+#        fi
+#    fi
 
-    if [ $profile -eq 1 ]; then
-        python -m cProfile -o gtg.prof ./gtg $args -t "$title"
-        python ./scripts/profile_interpret.sh
-    else
-	./gtg $args -t "$title"
-    fi
+#    if [ $profile -eq 1 ]; then
+#        python -m cProfile -o gtg.prof ./gtg $args -t "$title"
+#        python ./scripts/profile_interpret.sh
+#    else
+#	./gtg $args -t "$title"
+#    fi
+#fi
+
+if [ $norun -eq 0 ]
+then
+    PYTHONPATH=$PWD $PYTHON_EXE ./GTG/gtg $args -t "$title"
 fi
 
