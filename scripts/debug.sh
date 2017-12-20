@@ -6,7 +6,7 @@ if [ $UID -eq 0 ]; then
     exit
 fi
 
-PYTHON_EXE=python3
+PYTHON_EXE=python2
 args="--no-crash-handler"
 dataset="default"
 norun=0
@@ -81,6 +81,6 @@ fi
 
 if [ $norun -eq 0 ]
 then
-    PYTHONPATH=$PWD $PYTHON_EXE ./GTG/gtg $args -t "$title"
+    PYTHONPATH=$PWD $PYTHON_EXE ./gtg $args -t "$title"
 fi
 
