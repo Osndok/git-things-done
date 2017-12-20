@@ -32,13 +32,6 @@ from GTG.plugins.export.task_str import get_task_wrappers
 from GTG.plugins.export.templates import Template, get_templates_paths
 
 
-# Enforce external dependencies
-for dependence in "pdflatex", "pdftk", "pdfjam":
-    retval = subprocess.call(["which", dependence], stdout=subprocess.PIPE)
-    if retval != 0:
-        raise ImportError("Missing command %s" % dependence)
-
-
 def get_user_dir(key):
     """
     http://www.freedesktop.org/wiki/Software/xdg-user-dirs
