@@ -292,12 +292,13 @@ class TaskBrowser(gobject.GObject):
             self.on_set_due_next_month,
             "on_set_due_next_year":
             self.on_set_due_next_year,
-            "on_set_due_now":
-            self.on_set_due_now,
-            "on_set_due_soon":
-            self.on_set_due_soon,
-            "on_set_due_someday":
-            self.on_set_due_someday,
+            "on_set_due_now"    : self.on_set_due_now,
+            "on_set_due_next"   : self.on_set_due_next,
+            "on_set_due_sooner" : self.on_set_due_sooner,
+            "on_set_due_soon"   : self.on_set_due_soon,
+            "on_set_due_soonish": self.on_set_due_soonish,
+            "on_set_due_later"  : self.on_set_due_later,
+            "on_set_due_someday": self.on_set_due_someday,
             "on_set_due_clear":
             self.on_set_due_clear,
             "on_dismiss_task":
@@ -1091,8 +1092,20 @@ class TaskBrowser(gobject.GObject):
     def on_set_due_now(self, widget):
         self.update_due_date(widget, "now")
 
+    def on_set_due_next(self, widget):
+        self.update_due_date(widget, "next")
+
+    def on_set_due_sooner(self, widget):
+        self.update_due_date(widget, "sooner")
+
     def on_set_due_soon(self, widget):
         self.update_due_date(widget, "soon")
+
+    def on_set_due_soonish(self, widget):
+        self.update_due_date(widget, "soonish")
+
+    def on_set_due_later(self, widget):
+        self.update_due_date(widget, "later")
 
     def on_set_due_someday(self, widget):
         self.update_due_date(widget, "someday")

@@ -1215,6 +1215,28 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
               </object>
             </child>
             <child>
+              <object class="GtkImageMenuItem" id="tcm_due_next">
+                <property name="label" translatable="yes">_Next</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_set_due_next" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="tcm_due_sooner">
+                <property name="label" translatable="yes">_Sooner</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_set_due_sooner" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="tcm_due_soon">
                 <property name="label" translatable="yes">_Soon</property>
                 <property name="visible">True</property>
@@ -1223,6 +1245,28 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
                 <property name="use_underline">True</property>
                 <property name="use_stock">False</property>
                 <signal name="activate" handler="on_set_due_soon" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="tcm_due_soonish">
+                <property name="label" translatable="yes">_Soonish</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_set_due_soonish" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="tcm_due_later">
+                <property name="label" translatable="yes">_Later</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_set_due_later" swapped="no"/>
               </object>
             </child>
             <child>
