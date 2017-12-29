@@ -86,8 +86,7 @@ class TreeFactory:
         # Build the "without tag tag"
         notag_tag = Tag(CoreConfig.NOTAG_TAG, req=req)
         notag_tag.set_attribute("special", "notag")
-        notag_tag.set_attribute("label", "<span weight='bold'>%s</span>"
-                                % _("Tasks with no tags"))
+        notag_tag.set_attribute("label", "<span weight='bold'>%s</span>" % _("Untagged"))
         notag_tag.set_attribute("icon", "gtg-tags-none")
         notag_tag.set_attribute("order", 2)
         tagtree.add_node(notag_tag)
