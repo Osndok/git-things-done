@@ -32,33 +32,41 @@ from GTG import _, ngettext
 
 __all__ = 'Date',
 
-NOW, SOON, SOMEDAY, NODATE = range(4)
+NOW, NEXT, SOONER, SOON, SOONISH, LATER, SOMEDAY, NODATE = range(4)
 # strings representing fuzzy dates + no date
 ENGLISH_STRINGS = {
     NOW: 'now',
+    NEXT:    'next',
+    SOONER:  'sooner',
     SOON: 'soon',
+    SOONISH: 'soonish',
+    LATER:   'later',
     SOMEDAY: 'someday',
     NODATE: '',
 }
 
 STRINGS = {
     NOW: _('now'),
+    NEXT:    _('next'),
+    SOONER:  _('sooner'),
     SOON: _('soon'),
+    SOONISH: _('soonish'),
+    LATER:   _('later'),
     SOMEDAY: _('someday'),
     NODATE: '',
 }
 
 LOOKUP = {
-    'now': NOW,
-    _('now').lower(): NOW,
-    'soon': SOON,
-    _('soon').lower(): SOON,
-    'later': SOMEDAY,
-    _('later').lower(): SOMEDAY,
-    'someday': SOMEDAY,
-    _('someday').lower(): SOMEDAY,
+    'now'    : NOW    , _('now'    ).lower(): NOW,
+    'next'   : NEXT   , _('next'   ).lower(): NEXT,
+    'sooner' : SOONER , _('sooner' ).lower(): SOONER,
+    'soon'   : SOON   , _('soon'   ).lower(): SOON,
+    'soonish': SOONISH, _('soonish').lower(): SOONISH,
+    'later'  : LATER  , _('later'  ).lower(): LATER,
+    'someday': SOMEDAY, _('someday').lower(): SOMEDAY,
     '': NODATE,
 }
+
 # functions giving absolute dates for fuzzy dates + no date
 FUNCS = {
     NOW: datetime.date.today(),
@@ -227,14 +235,34 @@ class Date(object):
         return Date(NOW)
 
     @classmethod
+    def next(cls):
+        """ Return date representing fuzzy date next """
+        return Date(NEXT)
+
+    @classmethod
     def no_date(cls):
         """ Return date representing no (set) date """
         return Date(NODATE)
 
     @classmethod
+    def sooner(cls):
+        """ Return date representing fuzzy date sooner """
+        return Date(SOONER)
+
+    @classmethod
     def soon(cls):
         """ Return date representing fuzzy date soon """
         return Date(SOON)
+
+    @classmethod
+    def soonish(cls):
+        """ Return date representing fuzzy date soonish """
+        return Date(SOONISH)
+
+    @classmethod
+    def later(cls):
+        """ Return date representing fuzzy date later """
+        return Date(LATER)
 
     @classmethod
     def someday(cls):
