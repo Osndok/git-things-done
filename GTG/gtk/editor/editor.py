@@ -69,8 +69,10 @@ class TaskEditor:
         self.deletebutton.set_tooltip_text(GnomeConfig.DELETE_TOOLTIP)
         self.subtask_button = self.builder.get_object("insert_subtask")
         self.subtask_button.set_tooltip_text(GnomeConfig.SUBTASK_TOOLTIP)
+        self.subtask_button.hide();
         self.inserttag_button = self.builder.get_object("inserttag")
         self.inserttag_button.set_tooltip_text(GnomeConfig.TAG_TOOLTIP)
+        self.inserttag_button.hide();
         self.parent_button = self.builder.get_object("parent")
 
         # Create our dictionary and connect it
