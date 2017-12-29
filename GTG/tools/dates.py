@@ -32,7 +32,7 @@ from GTG import _, ngettext
 
 __all__ = 'Date',
 
-NOW, NEXT, SOONER, SOON, SOONISH, LATER, SOMEDAY, NODATE = range(4)
+NOW, NEXT, SOONER, SOON, SOONISH, LATER, SOMEDAY, NODATE = range(8)
 # strings representing fuzzy dates + no date
 ENGLISH_STRINGS = {
     NOW: 'now',
@@ -65,14 +65,6 @@ LOOKUP = {
     'later'  : LATER  , _('later'  ).lower(): LATER,
     'someday': SOMEDAY, _('someday').lower(): SOMEDAY,
     '': NODATE,
-}
-
-# functions giving absolute dates for fuzzy dates + no date
-FUNCS = {
-    NOW: datetime.date.today(),
-    SOON: datetime.date.today() + datetime.timedelta(15),
-    SOMEDAY: datetime.date.max,
-    NODATE: datetime.date.max - datetime.timedelta(1),
 }
 
 # ISO 8601 date format
@@ -138,6 +130,17 @@ class Date(object):
     def date(self):
         """ Map date into real date, i.e. convert fuzzy dates """
         if self.is_fuzzy():
+            # More expensive than it needs to be...
+            FUNCS = {
+                NOW    : datetime.date.today(),
+                NEXT   : datetime.date.today() + datetime.timedelta(1),
+                SOONER : datetime.date.today() + datetime.timedelta(7),
+                SOON   : datetime.date.today() + datetime.timedelta(15),
+                SOONISH: datetime.date.today() + datetime.timedelta(25),
+                NODATE : datetime.date.max - datetime.timedelta(2),
+                LATER  : datetime.date.max - datetime.timedelta(1),
+                SOMEDAY: datetime.date.max,
+            }
             return FUNCS[self._fuzzy]
         else:
             return self._real_date
