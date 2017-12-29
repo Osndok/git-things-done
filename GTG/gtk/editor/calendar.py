@@ -49,33 +49,32 @@ class GTGCalendar(gobject.GObject):
         self.__init_gtk__()
 
     def __init_gtk__(self):
-        self.__window = self.__builder.get_object("calendar")
-        self.__calendar = self.__builder.get_object("calendar1")
-        self.__fuzzydate_btns = self.__builder.get_object("fuzzydate_btns")
-        self.__builder.get_object("button_clear").connect("clicked",
-                                                          lambda w:
-                                                          self.__day_selected(
-                                                          w, ""))
-        self.__builder.get_object("button_now").connect("clicked",
-                                                        lambda w:
-                                                        self.__day_selected(
-                                                        w, "now"))
-        self.__builder.get_object("button_soon").connect("clicked",
-                                                         lambda w:
-                                                         self.__day_selected(
-                                                         w, "soon"))
-        self.__builder.get_object("button_someday").connect("clicked",
-                                                            lambda w:
-                                                            self.
-                                                            __day_selected(w,
-                                                            "someday"))
+        o=self.__builder.get_object
+        self.__window = o("calendar")
+        self.__calendar = o("calendar1")
+        self.__visibleForDueDateOnly = [
+            o("fuzzydate_btns"),
+            o("button_later"),
+            o("button_someday")
+        ];
+
+        o("button_now"    ).connect("clicked", lambda w: self.__day_selected(w, "now"))
+        o("button_next"   ).connect("clicked", lambda w: self.__day_selected(w, "next"))
+        #("button_sooner" ).connect("clicked", lambda w: self.__day_selected(w, "sooner"))
+        o("button_soon"   ).connect("clicked", lambda w: self.__day_selected(w, "soon"))
+        #("button_soonish").connect("clicked", lambda w: self.__day_selected(w, "soonish"))
+        o("button_later"  ).connect("clicked", lambda w: self.__day_selected(w, "later"))
+        o("button_someday").connect("clicked", lambda w: self.__day_selected(w, "someday"))
+        o("button_clear"  ).connect("clicked", lambda w: self.__day_selected(w, ""))
 
     def set_date(self, date, date_kind):
         self.__date_kind = date_kind
         if date_kind == GTGCalendar.DATE_KIND_DUE:
-            self.__fuzzydate_btns.show()
+            for widget in self.__visibleForDueDateOnly:
+                widget.show();
         else:
-            self.__fuzzydate_btns.hide()
+            for widget in self.__visibleForDueDateOnly:
+                widget.hide();
         if not date:
             # we set the widget to today's date if there is not a date defined
             date = Date.today()
