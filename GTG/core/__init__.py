@@ -50,8 +50,8 @@ DEFAULTS = {
     'browser': {
         "bg_color_enable": True,
         "contents_preview_enable": False,
-        'tag_pane': False,
-        "sidebar_width": 120,
+        'tag_pane': True,
+        "sidebar_width": 184,
         "closed_task_pane": False,
         'bottom_pane_position': 300,
         'toolbar': True,
@@ -86,10 +86,10 @@ DEFAULTS = {
 # The goal of the SubConfig object is to handle default value and converting
 # String to Bool and Int when needed.
 #
-# Each GTG component using config should be ported to SubConfig and, for each
+# Each GTG component using config should be ported to SubConfig and, for each
 # setting, a default value should be written in the DEFAULTS above.
 #
-# Currently done : browser
+# Currently done : browser
 # Todo : editor, plugins
 
 class SubConfig():
