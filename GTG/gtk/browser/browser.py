@@ -263,6 +263,7 @@ class TaskBrowser(gobject.GObject):
             self.on_edit_done_task,
             "on_delete_task":
             self.on_delete_tasks,
+            "on_liberate_tasks": self.on_liberate_tasks,
             "on_modify_tags":
             self.on_modify_tags,
             "on_mark_as_done":
@@ -997,7 +998,7 @@ class TaskBrowser(gobject.GObject):
         self.vmanager.open_task(uid, thisisnew=True)
 
     def on_add_subtask(self, widget):
-        selected_task_uids = [uid for uid in self.get_selected_tasks() if uid is not None]
+        selected_task_uids = self.get_selected_task_ids();
 
         if len(selected_task_uids) == 0:
             print("on_add_subtask w/o selection?");
@@ -1049,6 +1050,14 @@ class TaskBrowser(gobject.GObject):
             tids_todelete = [tid]
         Log.debug("going to delete %s" % tids_todelete)
         self.vmanager.ask_delete_tasks(tids_todelete)
+
+    def on_liberate_tasks(self, widget=None, tid=None):
+        for task_id in self.get_selected_task_ids():
+            task=self.req.get_task(task_id);
+            if task is None:
+                print("Error: cannot find task %s" % task_id);
+            else:
+                task.set_parent(None);
 
     def update_start_date(self, widget, new_start_date):
         tasks = [self.req.get_task(uid)
@@ -1150,8 +1159,7 @@ class TaskBrowser(gobject.GObject):
             self.vmanager.close_task(task.get_id())
 
     def on_mark_as_done(self, widget):
-        tasks_uid = [uid for uid in self.get_selected_tasks()
-                     if uid is not None]
+        tasks_uid = self.get_selected_task_ids();
         if len(tasks_uid) == 0:
             return
         tasks = [self.req.get_task(uid) for uid in tasks_uid]
@@ -1170,8 +1178,7 @@ class TaskBrowser(gobject.GObject):
                 self.close_all_task_editors(uid)
 
     def on_dismiss_task(self, widget):
-        tasks_uid = [uid for uid in self.get_selected_tasks()
-                     if uid is not None]
+        tasks_uid = self.get_selected_task_ids();
         if len(tasks_uid) == 0:
             return
         tasks = [self.req.get_task(uid) for uid in tasks_uid]
@@ -1322,11 +1329,16 @@ class TaskBrowser(gobject.GObject):
             the task_tview.
         """
         ids = self.get_selected_tasks(tv)
-        if len(ids) > 0:
-            # FIXME: we should also unselect all the others
+        if len(ids) > 1:
+            print("ERROR: get_selected_task implies ONE.. but %d are selected" % len(ids));
+            return ids[0]
+        elif len(ids) > 0:
             return ids[0]
         else:
             return None
+
+    def get_selected_task_ids(self, tv=None):
+        return [uid for uid in self.get_selected_tasks(tv) if uid is not None]
 
     def get_selected_tasks(self, tv=None):
         """
