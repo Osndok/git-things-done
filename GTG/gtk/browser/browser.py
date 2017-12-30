@@ -1227,7 +1227,11 @@ class TaskBrowser(gobject.GObject):
         """ Apply filters for every pane: active tasks, closed tasks """
         for pane in self.vtree_panes:
             vtree = self.req.get_tasks_tree(name=pane, refresh=False)
+            start = time.time();
             vtree.apply_filter(filter_name, refresh=refresh)
+            runtime = time.time()-start;
+            if (runtime > 0.25):
+                print("apply_filter('%s') took %s seconds" %(filter_name, runtime));
 
     def unapply_filter_on_panes(self, filter_name, refresh=True):
         """ Apply filters for every pane: active tasks, closed tasks """
