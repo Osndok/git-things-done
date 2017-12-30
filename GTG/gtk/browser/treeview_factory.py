@@ -107,10 +107,10 @@ class TreeviewFactory():
 
         title = str_format % saxutils.escape(node.get_title())
         if node.get_status() == Task.STA_ACTIVE:
-            count = self.mainview.node_n_children(node.get_id(),
-                                                  recursive=True)
-            if count != 0:
-                title += " (%s)" % count
+            #count = self.mainview.node_n_children(node.get_id(), recursive=True)
+            #if count != 0:
+            #    title += " (%s)" % count
+            0;
         elif node.get_status() == Task.STA_DISMISSED:
             title = "<span color='%s'>%s</span>" % (self.unactive_color, title)
 
