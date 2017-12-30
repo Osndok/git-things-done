@@ -981,6 +981,19 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
       </object>
     </child>
     <child>
+      <object class="GtkImageMenuItem" id="tcm_add_supertask">
+        <property name="label" translatable="yes">Blocks...</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
+        <property name="use_underline">True</property>
+        <property name="image">tcm_img_add_supertask</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_supertask" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="tcm_edit">
         <property name="label">gtk-edit</property>
         <property name="visible">True</property>
@@ -1331,6 +1344,12 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     </child>
   </object>
   <object class="GtkImage" id="tcm_img_add_subtask">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">16</property>
+    <property name="icon_name">gtg-task-new</property>
+  </object>
+  <object class="GtkImage" id="tcm_img_add_supertask">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>

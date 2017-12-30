@@ -309,6 +309,7 @@ class TaskBrowser(gobject.GObject):
             self.on_close,
             "on_add_subtask":
             self.on_add_subtask,
+            "on_add_supertask": self.on_add_supertask,
             "on_tagcontext_deactivate":
             self.on_tagcontext_deactivate,
             "on_workview_toggled":
@@ -1027,6 +1028,38 @@ class TaskBrowser(gobject.GObject):
 
         # ...and only then, will we actually open the newly-created subtask.
         self.vmanager.open_task(new_task_id, thisisnew=True)
+
+    def on_add_supertask(self, widget):
+        selected_task_uids = self.get_selected_task_ids();
+
+        if len(selected_task_uids) == 0:
+            print("on_add_supertask w/o selection?");
+            return
+
+        children=[]
+        tags={}
+
+        # The first time around the block, we hunt down the tasks & collect all the tags.
+        for uid in selected_task_uids:
+            zetask = self.req.get_task(uid);
+            children.append(zetask);
+            for tag in zetask.get_tags():
+                tags[tag.get_name()]=True;
+
+        print("on_add_supertask\nchildren: %s\ntags: %s" % (children, tags));
+
+        # Make a new task (with the given tags), which will give us an *ID*
+        new_task = self.req.new_task(tags=tags.keys(), newtask=True);
+        new_task_id = new_task.get_id();
+
+        # Now, the second time around, we will make a note of all it's parents.
+        uid = self.get_selected_task()
+        for zetask in children:
+            new_task.add_child(zetask.get_id())
+
+        # ...and only then, will we actually open the newly-created subtask.
+        self.vmanager.open_task(new_task_id, thisisnew=True)
+
 
     def on_edit_active_task(self, widget, row=None, col=None):
         tid = self.get_selected_task()
