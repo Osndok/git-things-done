@@ -969,7 +969,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkImageMenuItem" id="tcm_add_subtask">
-        <property name="label" translatable="yes">Add a subtask</property>
+        <property name="label" translatable="yes">Blocked by...</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
