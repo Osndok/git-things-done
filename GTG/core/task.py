@@ -69,7 +69,7 @@ class Task(TreeNode):
 #        if self.loaded:
 #            self.req._task_loaded(self.tid)
         self.attributes = {}
-        self._modified_update()
+#        self._modified_update()
 
     def is_loaded(self):
         return self.loaded
@@ -81,6 +81,7 @@ class Task(TreeNode):
 
     def set_to_keep(self):
         self.can_be_deleted = False
+        self._modified_update()
 
     def is_new(self):
         return self.can_be_deleted
@@ -90,6 +91,7 @@ class Task(TreeNode):
 
     def set_uuid(self, value):
         self.uuid = str(value)
+        self._modified_update()
 
     def get_uuid(self):
         # NOTE: Transitional if switch, needed to add
@@ -118,6 +120,7 @@ class Task(TreeNode):
         @param task_remote_id: the id for this task in the backend backend_id
         '''
         self.remote_ids[str(backend_id)] = str(task_remote_id)
+        self._modified_update()
 
     def get_title(self):
         return self.title
@@ -134,6 +137,8 @@ class Task(TreeNode):
             self.title = title.strip('\t\n')
         else:
             self.title = "(no title task)"
+
+        self._modified_update()
         # Avoid unnecessary sync
         if self.title != old_title:
             self.sync()
@@ -141,7 +146,7 @@ class Task(TreeNode):
         else:
             return False
 
-    # TODO : should we merge this function with set_title ?
+    # TODO : should we merge this function with set_title ?
     def set_complex_title(self, text, tags=[]):
         if tags:
             assert(isinstance(tags[0], str))
@@ -192,6 +197,7 @@ class Task(TreeNode):
 
             self.set_due_date(due_date)
             self.set_start_date(defer_date)
+            #?: self._modified_update()
 
     def set_status(self, status, donedate=None):
         old_status = self.status
@@ -234,6 +240,8 @@ class Task(TreeNode):
             # or to today
             else:
                 self.closed_date = Date.today()
+
+        self._modified_update()
         self.sync()
 
     def get_status(self):
@@ -323,6 +331,7 @@ class Task(TreeNode):
         old_due_date = self.due_date
         new_duedate_obj = Date(new_duedate)  # caching the conversion
         self.due_date = new_duedate_obj
+
         # If the new date is fuzzy or undefined, we don't update related tasks
         if not new_duedate_obj.is_fuzzy():
             # if the task's start date happens later than the
@@ -353,6 +362,7 @@ class Task(TreeNode):
         # If the date changed, we notify the change for the children since the
         # constraints might have changed
         if old_due_date != new_duedate_obj:
+            self._modified_update()
             self.recursive_sync()
 
     def get_due_date(self):
@@ -416,6 +426,7 @@ class Task(TreeNode):
             not self.due_date.is_fuzzy() and \
                 Date(fulldate) > self.due_date:
             self.set_due_date(fulldate)
+            self._modified_update()
         self.sync()
 
     def get_start_date(self):
@@ -428,6 +439,7 @@ class Task(TreeNode):
     # dates.
     def set_closed_date(self, fulldate):
         self.closed_date = Date(fulldate)
+        self._modified_update()
         self.sync()
 
     def get_closed_date(self):
@@ -514,6 +526,7 @@ class Task(TreeNode):
             self.content = str(texte)
         else:
             self.content = ''
+        self._modified_update()
 
     ### SUBTASKS #############################################################
     #
@@ -524,6 +537,7 @@ class Task(TreeNode):
         subt = self.req.new_task(newtask=True)
         # we use the inherited childrens
         self.add_child(subt.get_id())
+        self._modified_update()
         return subt
 
     def add_child(self, tid):
@@ -542,6 +556,7 @@ class Task(TreeNode):
             child.set_due_date(self.get_due_date())
             for t in self.get_tags():
                 child.add_tag(t.get_name())
+        self._modified_update()
         self.sync()
         return True
 
@@ -554,6 +569,7 @@ class Task(TreeNode):
         c.remove_parent(self.get_id())
         if c.can_be_deleted:
             self.req.delete_task(tid)
+            self._modified_update()
             self.sync()
             return True
         else:
@@ -578,7 +594,7 @@ class Task(TreeNode):
         return tasks
 
     def get_subtask(self, tid):
-        # FIXME : remove this function. This is not useful
+        # FIXME : remove this function. This is not useful
         print "DEPRECATED: get_subtask"
         """Return the task corresponding to a given ID.
 
@@ -596,6 +612,7 @@ class Task(TreeNode):
                 not self.due_date.is_fuzzy() and \
                     par_duedate < self.due_date:
                 self.set_due_date(par_duedate)
+        self._modified_update()
         self.recursive_sync()
 
     def set_attribute(self, att_name, att_value, namespace=""):
@@ -607,6 +624,7 @@ class Task(TreeNode):
         """
         val = unicode(str(att_value), "UTF-8")
         self.attributes[(namespace, att_name)] = val
+        self._modified_update()
         self.sync()
 
     def get_attribute(self, att_name, namespace=""):
@@ -617,7 +635,7 @@ class Task(TreeNode):
         return self.attributes.get((namespace, att_name), None)
 
     def sync(self):
-        self._modified_update()
+        #!: self._modified_update()
         if self.is_loaded():
             # This is a liblarch call to the TreeNode ancestor
             self.modified()
@@ -625,10 +643,8 @@ class Task(TreeNode):
         else:
             return False
 
+    # Updates the modified timestamp
     def _modified_update(self):
-        '''
-        Updates the modified timestamp
-        '''
         self.last_modified = datetime.now()
 
 ### TAG FUNCTIONS ############################################################
@@ -656,6 +672,7 @@ class Task(TreeNode):
         oldt.modified()
         self.tag_added(new)
         self.req.get_tag(new).modified()
+        self._modified_update()
         self.sync()
 
     def tag_added(self, tagname):
@@ -702,6 +719,7 @@ class Task(TreeNode):
                 tagname, sep, c)
             # we modify the task internal state, thus we have to call for a
             # sync
+            self._modified_update()
             self.sync()
 
     # remove by tagname
@@ -715,6 +733,7 @@ class Task(TreeNode):
                     child.remove_tag(tagname)
         self.content = self._strip_tag(self.content, tagname)
         if modified:
+            self._modified_update()
             tag = self.req.get_tag(tagname)
             # The ViewCount of the tag still doesn't know that
             # the task was removed. We need to update manually
@@ -734,6 +753,7 @@ class Task(TreeNode):
                 self.remove_tag(tag)
         for tag in tags_list:
             self.add_tag(tag)
+        self._modified_update()
 
     def _strip_tag(self, text, tagname, newtag=''):
         return (text
