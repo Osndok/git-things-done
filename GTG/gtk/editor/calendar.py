@@ -50,8 +50,11 @@ class GTGCalendar(gobject.GObject):
 
     def __init_gtk__(self):
         o=self.__builder.get_object
+
         self.__window = o("calendar")
+
         self.__calendar = o("calendar1")
+
         self.__visibleForDueDateOnly = [
             o("fuzzydate_btns"),
             o("button_later"),
@@ -134,7 +137,10 @@ class GTGCalendar(gobject.GObject):
         # We grab the pointer in the calendar
         gdk.pointer_grab(self.__window.window, True,
                          gdk.BUTTON1_MASK | gdk.MOD2_MASK)
+
         self.__window.connect('button-press-event', self.__focus_out)
+        #self.__window.connect('button-release-event', self.__maybe_close_calendar)
+
         self.__sigid = self.__calendar.connect("day-selected",
                                                self.__day_selected,
                                                "RealDate")
@@ -173,7 +179,16 @@ class GTGCalendar(gobject.GObject):
             self.__date = Date(date)
         else:
             self.__date = Date(date_type)
+        # Hackish? Give time for:
+        # (1) the user to see the date turn blue, and
+        # (2) for *most* button-released events to cancel the calendar's in_drag mode
+        # As a side-effect, any dragged dates might drop into the window...
+        # but that's better than the aweful alternatives of:
+        # (1) "since when & why am I dragging a document into the calendar", and
+        # (2) "why did clicking on this date open the link that was under the date"
+        gtk.timeout_add(300, self.__maybe_close_calendar)
 
+    def __maybe_close_calendar(self):
         if self.__is_user_just_browsing_the_calendar:
             # this day-selected signal was caused by a month/year change
             self.__is_user_just_browsing_the_calendar = False
