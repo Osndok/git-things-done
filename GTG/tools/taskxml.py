@@ -47,7 +47,6 @@ def task_from_xml(task, xmlnode):
     # print "********************************"
     # print xmlnode.toprettyxml()
 
-    task.set_uuid(xmlnode.getAttribute("uuid"))
     task.set_title(read_node(xmlnode, "title"))
 
     status = xmlnode.getAttribute("status")
@@ -114,7 +113,6 @@ def task_to_xml(doc, task):
     t_xml = doc.createElement("task")
     t_xml.setAttribute("id", task.get_id())
     t_xml.setAttribute("status", task.get_status())
-    t_xml.setAttribute("uuid", task.get_uuid())
     tags_str = ""
     for tag in task.get_tags_name():
         tags_str = tags_str + saxutils.escape(str(tag)) + ","

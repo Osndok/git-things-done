@@ -23,7 +23,6 @@ task.py contains the Task class which represents (guess what) a task
 from datetime import datetime
 import cgi
 import re
-import uuid
 import xml.dom.minidom
 import xml.sax.saxutils as saxutils
 
@@ -49,7 +48,6 @@ class Task(TreeNode):
         # tid is a string ! (we have to choose a type and stick to it)
         assert(isinstance(ze_id, str) or isinstance(ze_id, unicode))
         self.tid = str(ze_id)
-        self.set_uuid(uuid.uuid4())
         self.remote_ids = {}
         self.content = ""
         self.title = _("My new task")
@@ -88,19 +86,6 @@ class Task(TreeNode):
 
     def get_id(self):
         return str(self.tid)
-
-    def set_uuid(self, value):
-        self.uuid = str(value)
-        self._modified_update()
-
-    def get_uuid(self):
-        # NOTE: Transitional if switch, needed to add
-        #      the uuid field to tasks created before
-        #      adding this field to the task description.
-        if self.uuid == "":
-            self.set_uuid(uuid.uuid4())
-            self.sync()
-        return str(self.uuid)
 
     def get_remote_ids(self):
         '''
