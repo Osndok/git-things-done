@@ -521,15 +521,35 @@ class TaskEditor:
         if len(parents) == 1:
             self.vmanager.open_task(parents[0])
         elif len(parents) > 1:
-            self.show_multiple_parent_popover(parents)
+            self.show_multiple_parent_popover(parents, widget)
 
-    def show_multiple_parent_popover(self, parent_ids):
-        parent_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+    def show_multiple_parent_popover(self, parent_ids, widget):
+        #parent_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.parent_popover = parent_box = gtk.Menu()
         for parent in parent_ids:
             parent_name = self.req.get_task(parent).get_title()
-            button = Gtk.ToolButton.new(None, parent_name)
-            button.connect("clicked", self.on_parent_item_clicked, parent)
+            #button = Gtk.ToolButton.new(None, parent_name)
+            button = gtk.MenuItem(parent_name);
+            #button.connect("clicked", self.on_parent_item_clicked, parent)
+            button.connect("activate", self.on_parent_item_clicked, parent)
             parent_box.add(button)
+
+        parent_box.show_all()
+        parent_menu_shell=None
+        parent_menu_item=None
+        positioning_function=None
+        mouse_button=0;
+        activate_time=gtk.get_current_event_time();
+        extra_data=None;
+        parent_box.popup(
+            parent_menu_shell,
+            parent_menu_item,
+            positioning_function,
+            mouse_button,
+            activate_time,
+            extra_data
+        );
+        return
 
         self.parent_popover = Gtk.Popover.new(self.parent_button)
         self.parent_popover.add(parent_box)
