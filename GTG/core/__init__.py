@@ -73,7 +73,7 @@ DEFAULTS = {
         "custom_colors": [],
     },
     'plugins': {
-        "enabled": [],
+        "enabled": ['not_today'],
         "disabled": [],
     }
 }
