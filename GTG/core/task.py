@@ -625,15 +625,14 @@ class Task(TreeNode):
         """
         return self.req.get_task(tid)
 
+    # Called whenever one task is dropped onto another one (for organization)
     def set_parent(self, parent_id):
         """Update the task's parent. Refresh due date constraints."""
         TreeNode.set_parent(self, parent_id)
         if parent_id is not None:
             par = self.req.get_task(parent_id)
             par_duedate = par.get_due_date_constraint()
-            if not par_duedate.is_fuzzy() and \
-                not self.due_date.is_fuzzy() and \
-                    par_duedate < self.due_date:
+            if par_duedate < self.due_date:
                 self.set_due_date(par_duedate)
         self._modified_update()
         self.recursive_sync()
