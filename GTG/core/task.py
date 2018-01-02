@@ -69,6 +69,25 @@ class Task(TreeNode):
         self.attributes = {}
 #        self._modified_update()
 
+    def as_key_value_pairs(self):
+        retval={
+            "TaskId": self.tid,
+            "Tags"  : self.get_tagline(),
+            "Title" : self.title,
+            "Status": self.status,
+        };
+        for key in self.remote_ids:
+            retval["Remote_%s" % key]=self.remote_ids[key];
+        if self.start_date:
+            retval['DateStart']=self.start_date;
+        if self.due_date:
+            retval['DateDue']=self.due_date;
+        if self.closed_date:
+            retval['DateClosed']=self.closed_date;
+        for key in self.attributes:
+            retval["Attr_%s"%str(key)]=self.attributes[key];
+        return retval;
+
     def is_loaded(self):
         return self.loaded
 
@@ -648,6 +667,11 @@ class Task(TreeNode):
                 tag = self.req.new_tag(tname)
             l.append(tag)
         return l
+
+    # returns one line of all the tags, as they might appear in the byline when building a new task
+    # presently this is only used for the metadata copying
+    def get_tagline(self):
+        return ", ".join(self.tags).strip(', ');
 
     def rename_tag(self, old, new):
         eold = saxutils.escape(saxutils.unescape(old))

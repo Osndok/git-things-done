@@ -73,6 +73,18 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="metadata">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Metadata</property>
+                <property name="stock_id">gtk-index</property>
+                <signal name="clicked" handler="on_metadata_select"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="insert_subtask">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Insert subtask</property>

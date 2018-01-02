@@ -103,6 +103,7 @@ class TaskEditor:
             "on_inserttag_clicked": self.inserttag_clicked,
             "on_move": self.on_move,
             "on_parent_select": self.on_parent_select,
+            "on_metadata_select": self.on_metadata_select,
         }
         self.builder.connect_signals(dic)
         self.window = self.builder.get_object("TaskEditor")
@@ -524,13 +525,10 @@ class TaskEditor:
             self.show_multiple_parent_popover(parents, widget)
 
     def show_multiple_parent_popover(self, parent_ids, widget):
-        #parent_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.parent_popover = parent_box = gtk.Menu()
         for parent in parent_ids:
             parent_name = self.req.get_task(parent).get_title()
-            #button = Gtk.ToolButton.new(None, parent_name)
             button = gtk.MenuItem(parent_name);
-            #button.connect("clicked", self.on_parent_item_clicked, parent)
             button.connect("activate", self.on_parent_item_clicked, parent)
             parent_box.add(button)
 
@@ -549,20 +547,42 @@ class TaskEditor:
             activate_time,
             extra_data
         );
-        return
-
-        self.parent_popover = Gtk.Popover.new(self.parent_button)
-        self.parent_popover.add(parent_box)
-        self.parent_popover.set_property("border-width", 0)
-        self.parent_popover.set_position(Gtk.PositionType.BOTTOM)
-        self.parent_popover.set_transitions_enabled(True)
-        self.parent_popover.show_all()
 
     # On click handler for open_parent_button's menu items
     def on_parent_item_clicked(self, widget, parent_id):
         self.vmanager.open_task(parent_id)
         if self.parent_popover.get_visible():
             self.parent_popover.hide()
+
+    def on_metadata_select(self, widget):
+        self.metadata_popover = metadata_box = gtk.Menu()
+        for key,value in self.task.as_key_value_pairs().iteritems():
+            metadata_name = "%s: %s"%(key,value)
+            button = gtk.MenuItem(metadata_name);
+            button.connect("activate", self.on_metadata_item_clicked, value)
+            metadata_box.add(button)
+
+        metadata_box.show_all()
+        parent_menu_shell=None
+        parent_menu_item=None
+        positioning_function=None
+        mouse_button=0;
+        activate_time=gtk.get_current_event_time();
+        extra_data=None;
+        metadata_box.popup(
+            parent_menu_shell,
+            parent_menu_item,
+            positioning_function,
+            mouse_button,
+            activate_time,
+            extra_data
+        );
+
+    def on_metadata_item_clicked(self, widget, value):
+        print(value);
+        gtk.clipboard_get().set_text(value)
+        if self.metadata_popover.get_visible():
+            self.metadata_popover.hide()
 
     def save(self):
         self.task.set_title(self.textview.get_title())
