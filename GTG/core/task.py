@@ -42,6 +42,8 @@ class Task(TreeNode):
     STA_DISMISSED = "Dismiss"
     STA_DONE = "Done"
 
+    UNTITLED=_("Untitled")
+
     def __init__(self, ze_id, requester, newtask=False):
         TreeNode.__init__(self, ze_id)
         # the id of this task in the project should be set
@@ -50,7 +52,7 @@ class Task(TreeNode):
         self.tid = str(ze_id)
         self.remote_ids = {}
         self.content = ""
-        self.title = _("My new task")
+        self.title = self.UNTITLED
         # available status are: Active - Done - Dismiss - Note
         self.status = self.STA_ACTIVE
         self.closed_date = Date.no_date()
@@ -139,8 +141,8 @@ class Task(TreeNode):
             title = title.decode('utf8')
         if title:
             self.title = title.strip('\t\n')
-        else:
-            self.title = "(no title task)"
+        if not title:
+            self.title = self.UNTITLED;
 
         self._modified_update()
         # Avoid unnecessary sync
