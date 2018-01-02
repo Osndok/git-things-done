@@ -69,7 +69,7 @@ class Task(TreeNode):
 #        if self.loaded:
 #            self.req._task_loaded(self.tid)
         self.attributes = {}
-#        self._modified_update()
+        self._modified_update()
 
     def as_key_value_pairs(self):
         retval={
