@@ -851,7 +851,7 @@ class TaskBrowser(gobject.GObject):
             task = self.req.new_task(newtask=True)
             self.__last_quick_added_tid = task.get_id()
             self.__last_quick_added_tid_event.set()
-            task.set_complex_title(text, tags=tags)
+            task.populate_from_single_line_of_text(text, tags=tags)
             self.quickadd_entry.set_text('')
 
             # signal the event for the plugins to catch

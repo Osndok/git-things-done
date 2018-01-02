@@ -152,58 +152,59 @@ class Task(TreeNode):
         else:
             return False
 
-    # TODO : should we merge this function with set_title ?
-    def set_complex_title(self, text, tags=[]):
+    def populate_from_single_line_of_text(self, text, tags=[]):
         if tags:
             assert(isinstance(tags[0], str))
+        if not text:
+            return;
         due_date = Date.no_date()
         defer_date = Date.no_date()
-        if text:
-            # Get tags in the title
-            for match in extract_tags_from_text(text):
-                tags.append(match)
-            # Get attributes
-            regexp = r'([\s]*)([\w-]+):\s*([^\s]+)'
-            matches = re.findall(regexp, text, re.UNICODE)
-            for spaces, attribute, args in matches:
-                valid_attribute = True
-                if attribute.lower() in ["tags", _("tags"), "tag", _("tag")]:
-                    for tag in args.split(","):
-                        if not tag.strip() == "@" and not tag.strip() == "":
-                            if not tag.startswith("@"):
-                                tag = "@" + tag
-                            tags.append(tag)
-                elif attribute.lower() in ["defer", _("defer"), "start",
-                                           _("start")]:
-                    try:
-                        defer_date = Date.parse(args)
-                    except ValueError:
-                        valid_attribute = False
-                elif attribute.lower() == "due" or \
-                        attribute.lower() == _("due"):
-                    try:
-                        due_date = Date.parse(args)
-                    except:
-                        valid_attribute = False
-                else:
-                    # attribute is unknown
+
+        # Get tags in the title
+        for match in extract_tags_from_text(text):
+            tags.append(match)
+        # Get attributes
+        regexp = r'([\s]*)([\w-]+):\s*([^\s]+)'
+        matches = re.findall(regexp, text, re.UNICODE)
+        for spaces, attribute, args in matches:
+            valid_attribute = True
+            if attribute.lower() in ["tags", _("tags"), "tag", _("tag")]:
+                for tag in args.split(","):
+                    if not tag.strip() == "@" and not tag.strip() == "":
+                        if not tag.startswith("@"):
+                            tag = "@" + tag
+                        tags.append(tag)
+            elif attribute.lower() in ["defer", _("defer"), "start",
+                                       _("start")]:
+                try:
+                    defer_date = Date.parse(args)
+                except ValueError:
                     valid_attribute = False
+            elif attribute.lower() == "due" or \
+                    attribute.lower() == _("due"):
+                try:
+                    due_date = Date.parse(args)
+                except:
+                    valid_attribute = False
+            else:
+                # attribute is unknown
+                valid_attribute = False
 
-                if valid_attribute:
-                    # remove valid attribute from the task title
-                    text = \
-                        text.replace("%s%s:%s" % (spaces, attribute, args), "")
+            if valid_attribute:
+                # remove valid attribute from the task title
+                text = \
+                    text.replace("%s%s:%s" % (spaces, attribute, args), "")
 
-            for t in tags:
-                self.add_tag(t)
+        for t in tags:
+            self.add_tag(t)
 
-            if text != "":
-                self.set_title(text.strip())
-                self.set_to_keep()
+        if text != "":
+            self.set_title(text.strip())
+            self.set_to_keep()
 
-            self.set_due_date(due_date)
-            self.set_start_date(defer_date)
-            #?: self._modified_update()
+        self.set_due_date(due_date)
+        self.set_start_date(defer_date)
+        #?: self._modified_update()
 
     def set_status(self, status, donedate=None):
         old_status = self.status
