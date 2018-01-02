@@ -407,9 +407,12 @@ class TaskBrowser(gobject.GObject):
         self._add_accelerator_for_widget(agr, "help_contents", "F1")
 
         quickadd_field = self.builder.get_object("quickadd_field")
+
         key, mod = gtk.accelerator_parse("<Control>l")
-        quickadd_field.add_accelerator("grab-focus", agr, key, mod,
-                                       gtk.ACCEL_VISIBLE)
+        quickadd_field.add_accelerator("grab-focus", agr, key, mod, gtk.ACCEL_VISIBLE)
+
+        key, mod = gtk.accelerator_parse("<Control>f")
+        quickadd_field.add_accelerator("grab-focus", agr, key, mod, gtk.ACCEL_VISIBLE)
 
 ### HELPER FUNCTIONS ########################################################
     def open_preferences(self, widget):
