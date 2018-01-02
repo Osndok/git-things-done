@@ -244,8 +244,12 @@ class TreeviewFactory():
             t2_order = t2.get_attribute("order")
             return cmp(t1_order, t2_order)
 
+
+    # This drag-and-drop handler is called only when dragging a task (such as from the right pane)
+    # onto a tag/search (which is the left pane).
     def ontag_task_dnd(self, source, target):
         task = self.req.get_task(source)
+        #print("dragged task %s onto %s"%(source,target));
         if target.startswith('@'):
             task.add_tag(target)
         elif target == 'gtg-tags-none':
