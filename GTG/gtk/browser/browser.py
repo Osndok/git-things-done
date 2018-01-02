@@ -1646,6 +1646,7 @@ class TaskBrowser(gobject.GObject):
             'add'    : _("Add Task"),
             'open'   : _("Open: %s"),
             'search' : _("Search"),
+            'tag'    : _("Tag: %s"),
             'command': _("Command: %s"),
         }
 
@@ -1673,6 +1674,7 @@ class TaskBrowser(gobject.GObject):
         new_actions = []
         query = self.quickadd_entry.get_text()
         query = query.strip()
+        lower_query = query.lower();
 
         # If the tag pane is hidden, reset search filter when query is empty
         if query == '' and not self.config.get("tag_pane"):
@@ -1688,6 +1690,10 @@ class TaskBrowser(gobject.GObject):
         if query:
             if query in self.search_possible_actions:
                 self.search_actions.append(('command', query, query))
+
+            for tag in self.req.get_all_tags():
+                if lower_query in tag.lower():
+                    self.search_actions.append(('tag', tag, tag));
 
             for task_id in self.req.task_ids_from_title_keywords(query):
                 task_title=self.req.get_task(task_id).get_title();
@@ -1779,6 +1785,11 @@ class TaskBrowser(gobject.GObject):
                 self.on_select_tag()
             else:
                 self.apply_filter_on_panes(name)
+        elif action == 'tag':
+            print("TODO: somehow switch to tag: %s"%_id);
+            tag=self.req.get_tag(_id);
+            print("got: %s"%str(tag));
+            #?: self.on_select_tag()
         else:
             print("unknown autocomplete action/key: %s" % action);
 
