@@ -211,7 +211,8 @@ class CoreConfig(Borg):
         config = ConfigParser.ConfigParser()
         try:
             config.read(path)
-        except ConfigParser.Error:
+        except ConfigParser.Error as e:
+            print("ERROR: unable to parse config file: "+str(e))
             open(path, "w").close()
         return config
 
