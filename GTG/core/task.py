@@ -23,6 +23,7 @@ task.py contains the Task class which represents (guess what) a task
 from datetime import datetime
 import cgi
 import re
+import string
 import xml.dom.minidom
 import xml.sax.saxutils as saxutils
 
@@ -155,15 +156,29 @@ class Task(TreeNode):
     def populate_from_single_line_of_text(self, text, tags=[]):
         if tags:
             assert(isinstance(tags[0], str))
+
+        # TODO: We expect one line, without tabs, so... a bit of paranoia for pasted text?
+
+        # Reduce multiple spaces
+        text=string.replace(text, '  ', ' ').strip();
+        text=string.replace(text, '  ', ' ');
+
         if not text:
+            print("populate_from_single_line_of_text: empty/whitespace")
             return;
+
         due_date = Date.no_date()
         defer_date = Date.no_date()
 
-        # Get tags in the title
+        # Extract/remove tags from the title, but only if doing so would not make it empty.
         for match in extract_tags_from_text(text):
             tags.append(match)
-        # Get attributes
+            without_tag=string.replace(text, match, '');
+            without_tag=string.replace(without_tag, '  ', ' ').strip();
+            if without_tag:
+                text=without_tag;
+
+        # Get key-value attributes of the form "key:value"
         regexp = r'([\s]*)([\w-]+):\s*([^\s]+)'
         matches = re.findall(regexp, text, re.UNICODE)
         for spaces, attribute, args in matches:
