@@ -503,7 +503,7 @@ class Task(TreeNode):
         if self.content:
             txt = self.content
             if strip_tags:
-                for tag in self.get_tags_name():
+                for tag in self.get_tag_names():
                     txt = self._strip_tag(txt, tag)
             element = xml.dom.minidom.parseString(txt)
             txt = self.__strip_content(element, strip_subtasks=strip_subtasks)
@@ -631,9 +631,16 @@ class Task(TreeNode):
         TreeNode.set_parent(self, parent_id)
         if parent_id is not None:
             par = self.req.get_task(parent_id)
+
+            # Adopt the stricter deadline...
             par_duedate = par.get_due_date_constraint()
             if par_duedate < self.due_date:
                 self.set_due_date(par_duedate)
+
+            # Accumulate more tags...
+            for tag in par.get_tag_names():
+                self.add_tag(tag);
+
         self._modified_update()
         self.recursive_sync()
 
@@ -671,6 +678,11 @@ class Task(TreeNode):
 
 ### TAG FUNCTIONS ############################################################
 #
+    def get_tag_names(self):
+        # Return a copy of the list of tags. Not the original object.
+        return list(self.tags)
+
+    #TODO: rename get_tags_name -> get_tags_names
     def get_tags_name(self):
         # Return a copy of the list of tags. Not the original object.
         return list(self.tags)
@@ -773,7 +785,7 @@ class Task(TreeNode):
         Given a list of strings representing tags, it makes sure that
         this task has those and only those tags.
         '''
-        for tag in self.get_tags_name():
+        for tag in self.get_tag_names():
             try:
                 tags_list.remove(tag)
             except:
