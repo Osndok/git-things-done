@@ -138,20 +138,24 @@ class Requester(gobject.GObject):
         Log.debug("deleting task %s" % tid)
         return self.__basetree.del_node(tid, recursive=recursive)
 
-    def get_task_id(self, task_title):
-        """ Heuristic which convert task_title to a task_id
+    def task_ids_from_title_keywords(self, words):
+        bits = words.split(' ')
 
-        Return a first task which has similar title """
+        # TODO: use all the kewords, not just the longest.
+        longest=max(bits, key=len).lower();
 
-        task_title = task_title.lower()
-        tasks = self.get_tasks_tree('active', False).get_all_nodes()
-        tasktree = self.get_main_view()
-        for task_id in tasks:
-            task = tasktree.get_node(task_id)
-            if task_title == task.get_title().lower():
-                return task_id
+        retval=[]
 
-        return None
+        # Don't search for single-letter or empty strings, there will be too many matches
+        if len(longest) > 1:
+            tasks = self.get_tasks_tree('active', False).get_all_nodes()
+            tasktree = self.get_main_view()
+            for task_id in tasks:
+                task = tasktree.get_node(task_id)
+                if longest in task.get_title().lower():
+                    retval.append(task_id);
+
+        return retval
 
     ############### Tags ##########################
     ###############################################

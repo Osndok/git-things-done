@@ -1639,14 +1639,14 @@ class TaskBrowser(gobject.GObject):
 
     def _init_search_completion(self):
         """ Initialize search completion """
-        self.search_completion = self.builder.get_object(
-            "quickadd_entrycompletion")
+        self.search_completion = self.builder.get_object("quickadd_entrycompletion")
         self.quickadd_entry.set_completion(self.search_completion)
 
         self.search_possible_actions = {
-            'add': _("Add Task"),
-            'open': _("Open Task"),
-            'search': _("Search"),
+            'add'    : _("Add Task"),
+            'open'   : _("Open: %s"),
+            'search' : _("Search"),
+            'command': _("Command: %s"),
         }
 
         self.search_actions = []
@@ -1686,23 +1686,30 @@ class TaskBrowser(gobject.GObject):
                     return
 
         if query:
-            if self.req.get_task_id(query) is not None:
-                new_actions.append('open')
-            else:
-                new_actions.append('add')
+            if query in self.search_possible_actions:
+                self.search_actions.append(('command', query, query))
+
+            for task_id in self.req.task_ids_from_title_keywords(query):
+                task_title=self.req.get_task(task_id).get_title();
+                self.search_actions.append(('open', task_id, task_title))
+
+            self.search_actions.append(('add', query, None))
 
             # Is query parsable?
             try:
                 parse_search_query(query)
-                new_actions.append('search')
+                self.search_actions.append(('search', query, None))
             except InvalidQuery:
                 pass
 
-            # Add new order of actions
-            for aid, name in enumerate(new_actions):
-                action = self.search_possible_actions[name]
-                self.search_completion.insert_action_markup(aid, action)
-                self.search_actions.append(name)
+            for i, action in enumerate(self.search_actions):
+                key, _id, argument = action;
+                format_string=self.search_possible_actions[key];
+                if argument:
+                    string=format_string % argument;
+                else:
+                    string=format_string;
+                self.search_completion.insert_action_markup(i, string)
 
     def expand_search_tag(self):
         """ For some unknown reason, search tag is not expanded correctly and
@@ -1714,14 +1721,16 @@ class TaskBrowser(gobject.GObject):
             self.tagtreeview.expand_row(search_path, False)
 
     def on_entrycompletion_action_activated(self, completion, index):
-        """ Executes action from completition of quickadd toolbar """
-        action = self.search_actions[index]
+        """ Executes action from auto-completion (a menu-like selection, not quickadd enter) """
+        action, _id, argument = self.search_actions[index]
+        print("entrycompletion: %s, %s, %s" % (action, _id, argument));
+
         if action == 'add':
             self.on_quickadd_activate(None)
+        elif action == 'command':
+            print('GTG/core/search.py defines SEARCH_COMMANDS... what do they do?');
         elif action == 'open':
-            task_title = self.quickadd_entry.get_text()
-            task_id = self.req.get_task_id(task_title)
-            self.vmanager.open_task(task_id)
+            self.vmanager.open_task(_id)
             self.quickadd_entry.set_text('')
         elif action == 'search':
             query = self.quickadd_entry.get_text()
@@ -1770,3 +1779,6 @@ class TaskBrowser(gobject.GObject):
                 self.on_select_tag()
             else:
                 self.apply_filter_on_panes(name)
+        else:
+            print("unknown autocomplete action/key: %s" % action);
+
