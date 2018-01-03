@@ -140,7 +140,7 @@ class TaskBrowser(gobject.GObject):
         icon_dirs = CoreConfig().get_icons_directories()
         for i in icon_dirs:
             gtk.icon_theme_get_default().prepend_search_path(i)
-            gtk.window_set_default_icon_name("gtg")
+            gtk.window_set_default_icon_name("gtd")
 
     def _init_widget_aliases(self):
         """
@@ -1273,16 +1273,16 @@ class TaskBrowser(gobject.GObject):
         """
         settings_done = {"label": GnomeConfig.MARK_DONE,
                          "tooltip": GnomeConfig.MARK_DONE_TOOLTIP,
-                         "icon-name": "gtg-task-done"}
+                         "icon-name": "gtd-task-done"}
         settings_undone = {"label": GnomeConfig.MARK_UNDONE,
                            "tooltip": GnomeConfig.MARK_UNDONE_TOOLTIP,
-                           "icon-name": "gtg-task-undone"}
+                           "icon-name": "gtd-task-undone"}
         settings_dismiss = {"label": GnomeConfig.MARK_DISMISS,
                             "tooltip": GnomeConfig.MARK_DISMISS_TOOLTIP,
-                            "icon-name": "gtg-task-dismiss"}
+                            "icon-name": "gtd-task-dismiss"}
         settings_undismiss = {"label": GnomeConfig.MARK_UNDISMISS,
                               "tooltip": GnomeConfig.MARK_UNDISMISS_TOOLTIP,
-                              "icon-name": "gtg-task-undismiss"}
+                              "icon-name": "gtd-task-undismiss"}
 
         def update_button(button, settings):
             button.set_icon_name(settings["icon-name"])
@@ -1329,8 +1329,8 @@ class TaskBrowser(gobject.GObject):
         """
         # We unselect all in the closed task view
         # Only if something is selected in the active task list
-        self.donebutton.set_icon_name("gtg-task-done")
-        self.dismissbutton.set_icon_name("gtg-task-dismiss")
+        self.donebutton.set_icon_name("gtd-task-done")
+        self.dismissbutton.set_icon_name("gtd-task-dismiss")
         if selection.count_selected_rows() > 0:
             if 'closed' in self.vtree_panes:
                 self.vtree_panes['closed'].get_selection().unselect_all()

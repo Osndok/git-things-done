@@ -4,12 +4,11 @@ Name=GTD
 GenericName=Task Manager
 GenericName[sk]=Správca pracovných úloh
 Comment=Personal tasks and TODO-list items organizer.
-Icon=gtg
+Icon=gtd
 Exec=gtd %U
 Terminal=false
 Type=Application
 Categories=Office;ProjectManagement;GTK;X-XFCE;X-Xfce-Toplevel;
 MimeType=x-scheme-handler/gtg;
 StartupNotify=true
-X-Ayatana-Desktop-Shortcuts=NewTask
 

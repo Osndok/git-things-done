@@ -27,13 +27,17 @@ Requires:       python-dateutil
 # Bugzilla backend?
 Requires:       notify-python
 
+# One day, the two shall live in harmony!
+# But for the moment, the two projects are not even separated enough to avoid conflicting files.
+Conflicts:      gtg
+
 %description
 Getting Things GNOME! (GTG) is a personal organizer for the GNOME desktop
 environment inspired by the Getting Things Done (GTD) methodology. GTG is
 designed with flexibility, adaptability, and ease of use in mind so it can be
 used as more than just GTD software.
 
-"Git Things Done" (GTD) is a fork of GTG with several goals to boost
+"GIT Things Done" (GTD) is a fork of GTG with several goals to boost
 productivity & improve the underlying datamodel. Particularly by using
 an easily introspectible git-based storage backend (rather than a sqlite
 backend), and not trying to move to gtk3.

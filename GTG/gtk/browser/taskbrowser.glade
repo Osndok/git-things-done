@@ -401,7 +401,7 @@
                     <property name="use_action_appearance">False</property>
                     <property name="is_important">True</property>
                     <property name="label" translatable="yes">New Task</property>
-                    <property name="icon_name">gtg-task-new</property>
+                    <property name="icon_name">gtd-task-new</property>
                     <signal name="clicked" handler="on_add_task" swapped="no"/>
                   </object>
                   <packing>
@@ -414,7 +414,7 @@
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">New Subtask</property>
-                    <property name="icon_name">gtg-task-new</property>
+                    <property name="icon_name">gtd-task-new</property>
                     <signal name="clicked" handler="on_add_subtask" swapped="no"/>
                   </object>
                   <packing>
@@ -489,7 +489,7 @@
                     <property name="use_action_appearance">False</property>
                     <property name="is_important">True</property>
                     <property name="label" translatable="yes">Mark as Done</property>
-                    <property name="icon_name">gtg-task-done</property>
+                    <property name="icon_name">gtd-task-done</property>
                     <signal name="clicked" handler="on_mark_as_done" swapped="no"/>
                   </object>
                   <packing>
@@ -504,7 +504,7 @@
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Dismiss</property>
-                    <property name="icon_name">gtg-task-dismiss</property>
+                    <property name="icon_name">gtd-task-dismiss</property>
                     <signal name="clicked" handler="on_dismiss_task" swapped="no"/>
                   </object>
                   <packing>
@@ -582,7 +582,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xpad">5</property>
-                        <property name="icon_name">gtg-tag</property>
+                        <property name="icon_name">gtd-tag</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -805,7 +805,7 @@ Getting Things GNOME! is distributed in the hope that it will be useful, but WIT
 You should have received a copy of the GNU General Public License along with Getting Things GNOME!; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</property>
     <property name="authors">Lionel Dricot (ploum@ploum.net),
 Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
-    <property name="logo_icon_name">gtg</property>
+    <property name="logo_icon_name">gtd</property>
     <property name="wrap_license">True</property>
     <signal name="delete-event" handler="on_about_delete" swapped="no"/>
     <signal name="response" handler="on_about_close" swapped="no"/>
@@ -835,25 +835,25 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-dismiss</property>
+    <property name="icon_name">gtd-task-dismiss</property>
   </object>
   <object class="GtkImage" id="bm_img_done">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-done</property>
+    <property name="icon_name">gtd-task-done</property>
   </object>
   <object class="GtkImage" id="bm_img_subtask">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-new</property>
+    <property name="icon_name">gtd-task-new</property>
   </object>
   <object class="GtkImage" id="bm_img_task">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-new</property>
+    <property name="icon_name">gtd-task-new</property>
   </object>
   <object class="GtkMenu" id="closed_task_context_menu">
     <property name="visible">True</property>
@@ -919,7 +919,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-undone</property>
+    <property name="icon_name">gtd-task-undone</property>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -937,7 +937,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-tag</property>
+    <property name="icon_name">gtd-tag</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
@@ -1347,31 +1347,31 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-new</property>
+    <property name="icon_name">gtd-task-new</property>
   </object>
   <object class="GtkImage" id="tcm_img_add_supertask">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-new</property>
+    <property name="icon_name">gtd-task-new</property>
   </object>
   <object class="GtkImage" id="tcm_img_dismiss">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-dismiss</property>
+    <property name="icon_name">gtd-task-dismiss</property>
   </object>
   <object class="GtkImage" id="tcm_img_mark_done">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="yalign">0.49000000953674316</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-done</property>
+    <property name="icon_name">gtd-task-done</property>
   </object>
   <object class="GtkImage" id="tcm_img_undismiss">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">16</property>
-    <property name="icon_name">gtg-task-undismiss</property>
+    <property name="icon_name">gtd-task-undismiss</property>
   </object>
 </interface>

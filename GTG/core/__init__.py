@@ -260,7 +260,7 @@ class CoreConfig(Borg):
 
     def get_icons_directories(self):
         """ Returns the directories containing the icons """
-        icons_dirs = [os.path.join(dir, 'gtg/icons') for dir in xdg_data_dirs]
+        icons_dirs = [os.path.join(dir, 'gtd/icons') for dir in xdg_data_dirs]
         icons_dirs.append(os.path.join(GTG.DATA_DIR, "icons"))
         icons_dirs.append(GTG.DATA_DIR)
         return icons_dirs

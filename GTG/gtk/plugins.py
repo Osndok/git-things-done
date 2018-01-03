@@ -41,7 +41,7 @@ def plugin_icon(column, cell, store, iterator):
 
     See PluginsDialog._init_plugin_tree().
     """
-    cell.set_property('icon-name', 'gtg-plugin')
+    cell.set_property('icon-name', 'gtd-plugin')
     cell.set_property('sensitive',
                       store.get_value(iterator, PLUGINS_COL_ACTIVATABLE))
 

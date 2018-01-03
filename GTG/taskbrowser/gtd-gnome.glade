@@ -143,7 +143,7 @@
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image5">
                             <property name="visible">True</property>
-                            <property name="icon_name">gtg-task-done</property>
+                            <property name="icon_name">gtd-task-done</property>
                           </widget>
                         </child>
                       </widget>
@@ -156,7 +156,7 @@
                         <signal name="activate" handler="on_dismiss_task"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image6">
-                            <property name="icon_name">gtg-task-dismiss</property>
+                            <property name="icon_name">gtd-task-dismiss</property>
                           </widget>
                         </child>
                       </widget>
@@ -213,7 +213,7 @@
               <widget class="GtkToolButton" id="new_task_b">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">New task</property>
-                <property name="icon_name">gtg-task-new</property>
+                <property name="icon_name">gtd-task-new</property>
                 <signal name="clicked" handler="on_add_task"/>
               </widget>
               <packing>
@@ -224,7 +224,7 @@
               <widget class="GtkToolButton" id="new_note_button">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">New note</property>
-                <property name="icon_name">gtg-note-new</property>
+                <property name="icon_name">gtd-note-new</property>
                 <signal name="clicked" handler="on_add_note"/>
               </widget>
               <packing>
@@ -268,7 +268,7 @@
               <widget class="GtkToolButton" id="mark_as_done_b">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Mark as done</property>
-                <property name="icon_name">gtg-task-done</property>
+                <property name="icon_name">gtd-task-done</property>
                 <signal name="clicked" handler="on_mark_as_done"/>
               </widget>
               <packing>
@@ -279,7 +279,7 @@
               <widget class="GtkToolButton" id="dismiss">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Dismiss</property>
-                <property name="icon_name">gtg-task-dismiss</property>
+                <property name="icon_name">gtd-task-dismiss</property>
                 <signal name="clicked" handler="on_dismiss_task"/>
               </widget>
               <packing>
@@ -738,7 +738,7 @@ Getting Things Gnome! is distributed in the hope that it will be useful, but WIT
 You should have received a copy of the GNU General Public License along with Getting Things Gnome!; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</property>
     <property name="authors">Lionel Dricot (ploum@ploum.net),
 Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
-    <property name="logo_icon_name">gtg</property>
+    <property name="logo_icon_name">gtd</property>
     <property name="wrap_license">True</property>
     <signal name="response" handler="on_about_close"/>
     <child internal-child="vbox">
@@ -769,7 +769,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
         <child internal-child="image">
           <widget class="GtkImage" id="menu-item-image14">
             <property name="visible">True</property>
-            <property name="icon_name">gtg-task-new</property>
+            <property name="icon_name">gtd-task-new</property>
           </widget>
         </child>
       </widget>
@@ -788,7 +788,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
         <child internal-child="image">
           <widget class="GtkImage" id="menu-item-image8">
             <property name="visible">True</property>
-            <property name="icon_name">gtg-task-done</property>
+            <property name="icon_name">gtd-task-done</property>
           </widget>
         </child>
       </widget>
@@ -802,7 +802,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
         <child internal-child="image">
           <widget class="GtkImage" id="menu-item-image9">
             <property name="visible">True</property>
-            <property name="icon_name">gtg-task-dismiss</property>
+            <property name="icon_name">gtd-task-dismiss</property>
           </widget>
         </child>
       </widget>
@@ -833,7 +833,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
         <child internal-child="image">
           <widget class="GtkImage" id="menu-item-image18">
             <property name="visible">True</property>
-            <property name="icon_name">gtg-task-undone</property>
+            <property name="icon_name">gtd-task-undone</property>
           </widget>
         </child>
       </widget>
@@ -847,7 +847,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
         <child internal-child="image">
           <widget class="GtkImage" id="menu-item-image19">
             <property name="visible">True</property>
-            <property name="icon_name">gtg-task-undismiss</property>
+            <property name="icon_name">gtd-task-undismiss</property>
           </widget>
         </child>
       </widget>

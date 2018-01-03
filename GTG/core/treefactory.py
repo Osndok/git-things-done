@@ -77,7 +77,7 @@ class TreeFactory:
         alltag.set_attribute("special", "all")
         alltag.set_attribute("label", "<span weight='bold'>%s</span>"
                              % _("All tasks"))
-        alltag.set_attribute("icon", "gtg-tags-all")
+        alltag.set_attribute("icon", "gtd-tags-all")
         alltag.set_attribute("order", 0)
         tagtree.add_node(alltag)
         p = {}
@@ -87,7 +87,7 @@ class TreeFactory:
         notag_tag = Tag(CoreConfig.NOTAG_TAG, req=req)
         notag_tag.set_attribute("special", "notag")
         notag_tag.set_attribute("label", "<span weight='bold'>%s</span>" % _("Untagged"))
-        notag_tag.set_attribute("icon", "gtg-tags-none")
+        notag_tag.set_attribute("icon", "gtd-tags-none")
         notag_tag.set_attribute("order", 2)
         tagtree.add_node(notag_tag)
         p = {}
