@@ -53,49 +53,9 @@ rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/GTG/plugins/geolocalized_tasks
 rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/GTG/plugins/geolocalized-tasks.gtg-plugin
 desktop-file-validate $RPM_BUILD_ROOT/%{_datadir}/applications/%{name}.desktop
 
-# Register as an application to be visible in the software center
-#
-# NOTE: It would be *awesome* if this file was maintained by the upstream
-# project, translated and installed into the right place during `make install`.
-#
-# See http://www.freedesktop.org/software/appstream/docs/ for more details.
-#
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
-cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
-<!--
-BugReportURL: https://bugs.launchpad.net/gtg/+bug/1266100
-SentUpstream: 2014-09-18
-TODO: pop this heredoc out into the main/outer repo.
--->
-<application>
-  <id type="desktop">gtg.desktop</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <description>
-    <p>
-      GIT Things Done is a fork of Getting Things Gnome.
-      Getting Things Gnome is a personal tasks and ToDo list organizer for inspired by
-      the Getting Things Done (GTD) methodology.
-    </p>
-    <p>
-      GTD and GTG are intended to help you track everything you need to do and need to know,
-      from small tasks to large projects.
-    </p>
-    <!-- FIXME: Probably needs another paragraph certainly some more text -->
-  </description>
-  <url type="homepage">https://wiki.gnome.org/gtg/</url>
-  <screenshots>
-    <screenshot type="default">https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/gtg/a.png</screenshot>
-    <screenshot>https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/gtg/b.png</screenshot>
-  </screenshots>
-  <updatecontact>git@osndok.com</updatecontact>
-   -->
-</application>
-EOF
+%find_lang gtd --with-gnome
 
-%find_lang %{name} --with-gnome
-
+mkdir ${RPM_BUILD_ROOT}%{_datadir}/gtd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -114,7 +74,7 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
-%files -f %{name}.lang
+%files -f gtd.lang
 %defattr(-,root,root,-)
 %doc AUTHORS CHANGELOG LICENSE README
 %{_bindir}/gtd
@@ -123,18 +83,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/services/org.gnome.GTD.service
 %{_datadir}/appdata/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/%{name}
-%{_datadir}/icons/hicolor/*/apps/%{name}.*
+%{_datadir}/gtd
 %{python_sitelib}/*
 %{_mandir}/man1/*.1.gz
-%{_datadir}/icons/hicolor/*/apps/gtg*
-%{_datadir}/icons/hicolor/*/apps/backend*
-%{_datadir}/icons/hicolor/*/actions/gtg*
-%{_datadir}/icons/hicolor/*/categories/gtg*
-%{_datadir}/icons/hicolor/*/categories/search*
-%{_datadir}/icons/hicolor/*/categories/items-tags*
-%{_datadir}/icons/hicolor/*/emblems/gtg*
-%{_datadir}/icons/hicolor/svg/gtg*
+%{_datadir}/icons/hicolor/*/apps/gtd*
+%{_datadir}/icons/hicolor/*/actions/gtd*
+%{_datadir}/icons/hicolor/*/categories/gtd*
+%{_datadir}/icons/hicolor/*/emblems/gtd*
+%{_datadir}/icons/hicolor/svg/gtd*
 %{_datadir}/icons/ubuntu-mono-dark/
 %{_datadir}/icons/ubuntu-mono-light/
 

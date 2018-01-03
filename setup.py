@@ -74,26 +74,27 @@ def create_data_files():
     data_files.extend(icons)
     # gtg .desktop icon
     data_files.append(('share/icons/hicolor/16x16/apps',
-                       ['data/icons/hicolor/16x16/apps/gtg.png']))
+                       ['data/icons/hicolor/16x16/apps/gtd.png']))
     data_files.append(('share/icons/hicolor/22x22/apps',
-                       ['data/icons/hicolor/22x22/apps/gtg.png']))
+                       ['data/icons/hicolor/22x22/apps/gtd.png']))
     data_files.append(('share/icons/hicolor/24x24/apps',
-                       ['data/icons/hicolor/24x24/apps/gtg.png']))
+                       ['data/icons/hicolor/24x24/apps/gtd.png']))
     data_files.append(('share/icons/hicolor/32x32/apps',
-                       ['data/icons/hicolor/32x32/apps/gtg.png']))
+                       ['data/icons/hicolor/32x32/apps/gtd.png']))
     data_files.append(('share/icons/hicolor/scalable/apps',
-                       ['data/icons/hicolor/scalable/apps/gtg.svg']))
+                       ['data/icons/hicolor/scalable/apps/gtd.svg']))
     # documentation
     helpfiles = create_userdoc_list()
     data_files.extend(helpfiles)
     # misc
+    data_files.append(('share/appdata', ['git-things-done.appdata.xml']))
     data_files.append(('share/applications', ['git-things-done.desktop']))
     data_files.append(('share/dbus-1/services', ['org.gnome.GTD.service']))
     data_files.append(('share/man/man1',
                        ['doc/gtd.1', 'doc/gtd-cli.1', 'doc/gtd-new-task.1']))
 
     # bash completion
-    #data_files.append(('share/gtg/', ['gtd_cli_bash_completion']))
+    #data_files.append(('share/gtd/', ['bash-completion']))
     return data_files
 
 
@@ -104,7 +105,7 @@ MO_DIR = os.path.join('build', 'po')
 
 for po in glob.glob(os.path.join(PO_DIR, '*.po')):
     lang = os.path.basename(po[:-3])
-    mo = os.path.join(MO_DIR, lang, 'gtg.mo')
+    mo = os.path.join(MO_DIR, lang, 'gtd.mo')
     target_dir = os.path.dirname(mo)
     if not os.path.isdir(target_dir):
         os.makedirs(target_dir)
@@ -125,7 +126,7 @@ class InstallData(install_data):
 
     def find_mo_files(self):
         data_files = []
-        for mo in glob.glob(os.path.join(MO_DIR, '*', 'gtg.mo')):
+        for mo in glob.glob(os.path.join(MO_DIR, '*', 'gtd.mo')):
             lang = os.path.basename(os.path.dirname(mo))
             dest = os.path.join('share', 'locale', lang, 'LC_MESSAGES')
             data_files.append((dest, [mo]))
@@ -210,21 +211,21 @@ setup(
                           './export_templates/thumbnail_textual.png',
                           ],
     'GTG.plugins.geolocalized_tasks': ['geolocalized.glade',
-                          'icons/hicolor/24x24/geolocalization.png',
-                          'icons/hicolor/16x16/assign-location.png',
-                          'icons/hicolor/svg/assign-location.svg',
-                          'icons/hicolor/svg/geolocalization.svg'],
+                          'icons/hicolor/24x24/gtd-geolocalization.png',
+                          'icons/hicolor/16x16/gtd-assign-location.png',
+                          'icons/hicolor/svg/gtd-assign-location.svg',
+                          'icons/hicolor/svg/gtd-geolocalization.svg'],
     'GTG.plugins.tomboy': ['tomboy.ui'],
     'GTG.plugins.hamster': ['prefs.ui',
-                            'icons/hicolor/32x32/hamster-activity-start.png',
-                            'icons/hicolor/32x32/hamster-activity-stop.png',
-                            'icons/hicolor/svg/hamster-activity-start.svg',
-                            'icons/hicolor/svg/hamster-activity-stop.svg'],
+                            'icons/hicolor/32x32/gtd-hamster-activity-start.png',
+                            'icons/hicolor/32x32/gtd-hamster-activity-stop.png',
+                            'icons/hicolor/svg/gtd-hamster-activity-start.svg',
+                            'icons/hicolor/svg/gtd-hamster-activity-stop.svg'],
     'GTG.plugins.task_reaper': ['reaper.ui'],
     'GTG.plugins.notification_area': ['notification_area.ui',
-                     './data/icons/hicolor/22x22/apps/gtg_need_attention.png',
-            './data/icons/ubuntu-mono-dark/22x22/apps/gtg_need_attention.svg',
-           './data/icons/ubuntu-mono-light/22x22/apps/gtg_need_attention.svg',
+                     './data/icons/hicolor/22x22/apps/gtd-needs-attention.png',
+            './data/icons/ubuntu-mono-dark/22x22/apps/gtd-needs-attention.svg',
+           './data/icons/ubuntu-mono-light/22x22/apps/gtd-needs-attention.svg',
                             ],
     'GTG.plugins.urgency_color': ['preferences.ui'],
     'GTG.plugins.untouched_tasks': ['untouchedTasks.ui'],

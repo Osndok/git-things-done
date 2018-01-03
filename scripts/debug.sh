@@ -81,6 +81,6 @@ fi
 
 if [ $norun -eq 0 ]
 then
-    PYTHONPATH=$PWD $PYTHON_EXE ./gtg $args -t "$title"
+    PYTHONPATH=$PWD $PYTHON_EXE ./gtd $args -t "$title"
 fi
 
