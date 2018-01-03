@@ -64,6 +64,7 @@
               <object class="GtkToolButton" id="parent">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">View Parent</property>
+                <property name="tooltip_text" translatable="yes">Open task(s) which this one blocks.</property>
                 <property name="stock_id">gtk-go-up</property>
                 <signal name="clicked" handler="on_parent_select"/>
               </object>
@@ -76,6 +77,7 @@
               <object class="GtkToolButton" id="metadata">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Metadata</property>
+                <property name="tooltip_text" translatable="yes">Copy task fields which are normally hidden.</property>
                 <property name="stock_id">gtk-index</property>
                 <signal name="clicked" handler="on_metadata_select"/>
               </object>
