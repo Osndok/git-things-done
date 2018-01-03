@@ -75,10 +75,11 @@ class Task(TreeNode):
     def as_key_value_pairs(self):
         retval={
             "TaskId": self.tid,
-            "Tags"  : self.get_tagline(),
             "Title" : self.title,
             "Status": self.status,
         };
+        if self.tags:
+            retval["Tags"]=self.get_tagline();
         for key in self.remote_ids:
             retval["Remote_%s" % key]=self.remote_ids[key];
         if self.start_date:
