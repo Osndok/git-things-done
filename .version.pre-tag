@@ -1,0 +1,4 @@
+sed -i.bak -e "s/^Version:\(.*\)/Version:        ${NEXT_VERSION}/g" *.spec
+rm -f *.spec.bak
+AND_VERSION_FILE="${AND_VERSION_FILE} $(ls *.spec)"
+
