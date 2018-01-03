@@ -407,6 +407,7 @@ class Task(TreeNode):
             is applied. """
         # Check out for constraints depending on date definition/fuzziness.
         strongest_const_date = self.due_date
+
         if strongest_const_date.is_fuzzy():
             for par_id in self.parents:
                 par = self.req.get_task(par_id)
@@ -414,14 +415,16 @@ class Task(TreeNode):
                 # if parent date is undefined or fuzzy, look further up
                 if par_duedate.is_fuzzy():
                     par_duedate = par.get_due_date_constraint()
-                # if par_duedate is still undefined/fuzzy, all parents' due
-                # dates are undefined or fuzzy: strongest_const_date is then
-                # the best choice so far, we don't update it.
-                if par_duedate.is_fuzzy():
-                    continue
-                # par_duedate is not undefined/fuzzy. If strongest_const_date
-                # is still undefined or fuzzy, parent_duedate is the best
-                # choice.
+                    # if par_duedate is still undefined/fuzzy, all ancestors due
+                    # dates are undefined or fuzzy... but it could be stricter
+                    # than the best choice so far!
+                    if par_duedate.is_fuzzy():
+                        if strongest_const_date.is_fuzzy() and par_duedate < strongest_const_date:
+                            strongest_const_date = par_duedate
+                        continue
+                #assert(!par_duedate.is_fuzzy());
+
+                #Always prefer real due dates to fuzzy ones.
                 if strongest_const_date.is_fuzzy():
                     strongest_const_date = par_duedate
                     continue
