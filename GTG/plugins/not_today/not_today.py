@@ -56,7 +56,9 @@ class notToday:
         self.tb_button.set_sensitive(False)
         self.tb_button.set_icon_name("document-revert")
         self.tb_button.set_is_important(True)
-        self.tb_button.set_label(_("Do it tomorrow"))
+        do_it_tomorrow=_("Do it tomorrow");
+        self.tb_button.set_label(do_it_tomorrow);
+        self.tb_button.set_tooltip_text(do_it_tomorrow);
         self.tb_button.connect('clicked', self.mark_not_today)
         self.tb_button.show()
         self.plugin_api.add_toolbar_item(self.tb_button)
