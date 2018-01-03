@@ -1,15 +1,15 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           git-things-done
-Version:        0.3.1
-Release:        15%{?dist}
+Version:        0.4.0
+Release:        16%{?dist}
 Summary:        Personal organizer for the GNOME desktop
 
 Group:          Applications/Productivity
 License:        GPLv3+
 URL:            https://github.com/Osndok/git-things-done/
 BuildArch:      noarch
-Source0:        https://github.com/Osndok/git-things-done/archive/%{name}-%{version}.tar.gz
+Source0:        https://github.com/Osndok/git-things-done/archive/v%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel
@@ -39,7 +39,7 @@ an easily introspectible git-based storage backend (rather than a sqlite
 backend), and not trying to move to gtk3.
 
 %prep
-%setup -q
+%setup -q -n "git-things-done-%{version}"
 sed -i -e "s|#!/usr/bin/env python||" GTG/gtg.py
 
 
@@ -67,17 +67,19 @@ cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
 <!--
 BugReportURL: https://bugs.launchpad.net/gtg/+bug/1266100
 SentUpstream: 2014-09-18
+TODO: pop this heredoc out into the main/outer repo.
 -->
 <application>
   <id type="desktop">gtg.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
+      GIT Things Done is a fork of Getting Things Gnome.
       Getting Things Gnome is a personal tasks and ToDo list organizer for inspired by
       the Getting Things Done (GTD) methodology.
     </p>
     <p>
-      GTG is intended to help you track everything you need to do and need to know,
+      GTD and GTG are intended to help you track everything you need to do and need to know,
       from small tasks to large projects.
     </p>
     <!-- FIXME: Probably needs another paragraph certainly some more text -->
@@ -87,8 +89,7 @@ SentUpstream: 2014-09-18
     <screenshot type="default">https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/gtg/a.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/gtg/b.png</screenshot>
   </screenshots>
-  <!-- FIXME: change this to an upstream email address for spec updates
-  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+  <updatecontact>git@osndok.com</updatecontact>
    -->
 </application>
 EOF
@@ -220,10 +221,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Sun Apr 11 2010 Yanko Kaneti <yaneti@declera.com> 0.2.4-1
 - New bugfix release from upstream
 
-* Mon Mar  4 2010 Yanko Kaneti <yaneti@declera.com> 0.2.3-1
+* Thu Mar 4 2010 Yanko Kaneti <yaneti@declera.com> 0.2.3-1
 - "A bit of polishing." - from upstream
 
-* Mon Mar  1 2010 Yanko Kaneti <yaneti@declera.com> 0.2.2-1
+* Mon Mar 1 2010 Yanko Kaneti <yaneti@declera.com> 0.2.2-1
 - New upstream release.
   http://gtg.fritalk.com/post/2010/03/01/Getting-Things-GNOME!-0.2.2-(Protector)-release-is-out!
 

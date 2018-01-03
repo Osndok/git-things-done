@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=org.gnome.GTD
+Exec=/usr/bin/gtd
+

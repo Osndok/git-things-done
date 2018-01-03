@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo 1>&2 "fatal: new & incompatible cli client coming soon"
+exit 1
+

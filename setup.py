@@ -62,7 +62,7 @@ def create_userdoc_list():
                 newroot = root.replace(prefix, "")
             else:
                 newroot = ""
-            newroot = os.path.join(HELP_DIR, comps[2], "gtg", newroot)
+            newroot = os.path.join(HELP_DIR, comps[2], "gtd", newroot)
             fileList.append((newroot, dirList))
     return fileList
 
@@ -87,13 +87,13 @@ def create_data_files():
     helpfiles = create_userdoc_list()
     data_files.extend(helpfiles)
     # misc
-    data_files.append(('share/applications', ['gtg.desktop']))
-    data_files.append(('share/dbus-1/services', ['org.gnome.GTG.service']))
+    data_files.append(('share/applications', ['git-things-done.desktop']))
+    data_files.append(('share/dbus-1/services', ['org.gnome.GTD.service']))
     data_files.append(('share/man/man1',
-                       ['doc/gtg.1', 'doc/gtcli.1', 'doc/gtg_new_task.1']))
+                       ['doc/gtd.1', 'doc/gtd-cli.1', 'doc/gtd-new-task.1']))
 
     # bash completion
-    data_files.append(('share/gtg/', ['gtcli_bash_completion']))
+    #data_files.append(('share/gtg/', ['gtd_cli_bash_completion']))
     return data_files
 
 
@@ -136,7 +136,7 @@ class InstallData(install_data):
 author = 'The GTG Team'
 
 setup(
-  name = 'gtg',
+  name = 'gtd',
   version = info.VERSION,
   url = info.URL,
   author = author,
@@ -230,6 +230,6 @@ setup(
     'GTG.plugins.untouched_tasks': ['untouchedTasks.ui'],
    },
   data_files = create_data_files(),
-  scripts=['gtg', 'gtcli', 'gtg_new_task'],
+  scripts=['gtd', 'gtd-cli', 'gtd-new-task'],
   cmdclass={'install_data': InstallData},
 )
