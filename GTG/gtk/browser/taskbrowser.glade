@@ -4,7 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="MainWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Getting Things GNOME!</property>
+    <property name="title" translatable="yes">GIT Things Done</property>
     <property name="default_width">700</property>
     <property name="default_height">550</property>
     <signal name="configure-event" handler="on_move" swapped="no"/>
@@ -333,10 +333,10 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="launchpad_translate">
-                        <property name="label">_Translate GTG</property>
+                        <property name="label">_Translate GTD</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Help to translate GTG into your language</property>
+                        <property name="tooltip_text" translatable="yes">Help to translate GTD into your language</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -790,15 +790,15 @@
   <object class="GtkAboutDialog" id="about_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">About GTG!</property>
+    <property name="title" translatable="yes">About GTD!</property>
     <property name="resizable">False</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="program_name" translatable="yes">Getting Things GNOME!</property>
+    <property name="program_name" translatable="yes">GIT Things Done</property>
     <property name="copyright" translatable="yes">Copyright © 2008-2013 Lionel Dricot, Bertrand Rousseau</property>
-    <property name="comments" translatable="yes">GTG is a personal tasks and TODO-list items organizer for the GNOME desktop environment.</property>
-    <property name="website_label" translatable="yes">GTG website</property>
-    <property name="license" translatable="yes">Getting Things GNOME! is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+    <property name="comments" translatable="yes">GTD is a fork of GTG (Getting Things GNOME!). GTD &amp; GTG are personal task and TODO-list organizers for the GNOME desktop environment.</property>
+    <property name="website_label" translatable="yes">GTD github.com pagee</property>
+    <property name="license" translatable="yes">GIT Things Done is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
 Getting Things GNOME! is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 

@@ -1,3 +1,12 @@
+====== GIT Things Done ======
+
+GIT Things Done (GTD) is a fork of GTG (Getting Things GNOME!).
+
+It's current feature targets include:
+* reversion to the older pygtk / gtk2 window toolkit
+* many usability cleanups
+* (eventually) a super-special GIT backend optimized for moderate-latency collaboration
+
 ====== Getting Things GNOME! ======
 
 Getting Things GNOME! (GTG) is a personal tasks and TODO list items organizer

@@ -39,7 +39,7 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkCheckButton" id="pref_autostart">
-                                <property name="label" translatable="yes">Start Getting Things GNOME! on every login</property>
+                                <property name="label" translatable="yes">Start GTD on every login</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>

@@ -63,7 +63,7 @@ def main():
     parser.add_option('-t', '--title', action='store',
                       help="Use special title for windows' title")
     parser.add_option('-v', '--version', action='store_true',
-                      dest='print_version', help="Print GTG's version number",
+                      dest='print_version', help="Print name & version number",
                       default=False)
     (options, args) = parser.parse_args()
 
@@ -71,7 +71,7 @@ def main():
         info.NAME = options.title
 
     if options.print_version:
-        print "GTG (Getting Things GNOME!)", info.VERSION
+        print("%s (%s) %s" % (info.ACRONYM, info.NAME, info.VERSION))
         print
         print "For more information:", info.URL
         sys.exit(0)

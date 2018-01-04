@@ -22,16 +22,17 @@ Contains the information displayed in GTG's Credits."""
 
 from GTG import _
 
-NAME = "Getting Things GNOME!"
-URL = "http://gtgnome.net"
+NAME = "GIT Things Done!"
+ACRONYM = "GTD"
+URL = "https://github.com/Osndok/git-things-done"
 HELP_URI = "help:gtg"
-TRANSLATE_URL = "https://translations.launchpad.net/gtg"
-REPORT_BUG_URL = "https://bugs.launchpad.net/gtg/+filebug"
-EMAIL = "gtg-contributors@lists.launchpad.net"
-VERSION = '0.3.1'
+TRANSLATE_URL = "https://github.com/Osndok/git-things-done/issues"
+REPORT_BUG_URL = "https://github.com/Osndok/git-things-done/issues"
+EMAIL = "git@osndok.com"
+VERSION='0.4.2'
 
 SHORT_DESCRIPTION = \
-    _('GTG is a personal tasks and TODO-list items organizer for the GNOME.')
+    _('GTD is a personal tasks and TODO-list items organizer for the GNOME. It is a fork of GTG (Getting Things GNOME!) @ http://gtgnome.net')
 
 # CREDITS
 AUTHORS = ["Main developers:",

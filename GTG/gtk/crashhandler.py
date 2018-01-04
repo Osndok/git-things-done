@@ -330,9 +330,9 @@ def signal_catcher(callback):
         signal.signal(s, lambda a, b: callback())
     yield
 
-initialize(app_name="Getting Things GNOME!",
-           message="GTG" + info.VERSION +
-           _(" has crashed. Please report the bug on <a href=\""
-           "http://bugs.edge.launchpad.net/gtg\">our Launchpad page</a>."
-             " If you have Apport installed, it will be started for you."),
+initialize(app_name=info.NAME,
+           message=
+           _(
+             "%s %s has crashed. Please report the bug on <a href=\"%s\">our bug tracking page</a>." % (info.ACRONYM, info.VERSION)
+           ),
            use_apport=True)
