@@ -1,0 +1,9 @@
+
+VERSION=$(cat .version)
+git archive --format=tar --prefix=git-things-done-${VERSION}/ HEAD | gzip > ~/rpmbuild/SOURCES/v${VERSION}.tar.gz
+
+for SPEC in *.spec
+do
+	rpmbuild -ba $SPEC
+done
+
