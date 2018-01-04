@@ -1,4 +1,8 @@
+
 sed -i.bak -e "s/^Version:\(.*\)/Version:        ${NEXT_VERSION}/g" *.spec
-rm -f *.spec.bak
-AND_VERSION_FILE="${AND_VERSION_FILE} $(ls *.spec)"
+sed -i.bak -e "s/^VERSION.*/VERSION='${NEXT_VERSION}'/" GT?/info.py
+
+rm -fv *.spec.bak GT?/*.bak
+
+AND_VERSION_FILE="${AND_VERSION_FILE} $(ls *.spec) GTG/info.py"
 
