@@ -29,7 +29,7 @@ from GTG.tools.dates import Date
 
 def get_text(node):
     if len(node.childNodes) > 0:
-        return node.firstChild.nodeValue.strip()
+        return node.firstChild.nodeValue #.strip()
     else:
         return ""
 
