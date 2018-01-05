@@ -46,7 +46,7 @@ def cleanNode(currentNode, indent, newl):
         toremove = []
         for node in currentNode.childNodes:
             if node.nodeType == 3:
-                val = node.nodeValue.lstrip(myfilter).strip(myfilter)
+                val = node.nodeValue #.lstrip(myfilter).strip(myfilter)
                 if val == "":
                     toremove.append(node)
                 else:
