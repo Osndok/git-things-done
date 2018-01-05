@@ -80,6 +80,7 @@ class Task(TreeNode):
             "TaskId": self.tid,
             "Title" : self.title,
             "Status": self.status,
+            "DateModified": self.get_modified_string(),
         };
         if self.tags:
             retval["Tags"]=self.get_tagline();
@@ -769,7 +770,7 @@ class Task(TreeNode):
             self._modified_update()
             self.sync()
 
-    # remove by tagname
+    # remove a tag from this task by the tag's name
     def remove_tag(self, tagname):
         modified = False
         if tagname in self.tags:
