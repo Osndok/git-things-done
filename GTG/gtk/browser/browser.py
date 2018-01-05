@@ -129,7 +129,7 @@ class TaskBrowser(gobject.GObject):
 
         # Update the title when a task change
         # BUG: TypeError: object at 0x7fdea80db780 of type Timer is not initialized
-        #vmanager.timer.connect('refresh', self.refresh_all_views)
+        vmanager.timer.connect('refresh', self.refresh_all_views)
 
 ### INIT HELPER FUNCTIONS #####################################################
 #

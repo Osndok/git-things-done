@@ -35,7 +35,8 @@ class Timer(GObject.GObject):
     __gsignals__ = {'refresh': __signal_type__}
 
     def __init__(self, config):
-        super(GObject.GObject, self).__init__()
+        #super(GObject.GObject, self).__init__()
+        GObject.GObject.__init__(self)
         self.config = config
         self.timeout_source = None
         self.connect_to_dbus()
