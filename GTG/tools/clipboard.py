@@ -58,8 +58,9 @@ class TaskClipboard():
                     is_subtask = True
                     tid = ta.get_data('child')
                     tas = self.req.get_task(tid)
-                    tas.set_to_keep()
-                    tas.sync()
+                    #???: Why was a 'copy' command... a *READ*... making changes? *WRITES*???
+                    #tas.set_to_keep()
+                    #tas.sync()
                     self.content.append(['subtask', tid])
             if not is_subtask:
                 if end_line.get_line() < stop.get_line():
