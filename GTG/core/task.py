@@ -106,7 +106,8 @@ class Task(TreeNode):
 
     def set_to_keep(self):
         self.can_be_deleted = False
-        self._modified_update()
+        #!!!: set_to_keep is called when *OPENING* a task editor window... which is not the same as *MODIFYING* a task.
+        #self._modified_update()
 
     def is_new(self):
         return self.can_be_deleted
@@ -225,7 +226,7 @@ class Task(TreeNode):
 
         self.set_due_date(due_date)
         self.set_start_date(defer_date)
-        #?: self._modified_update()
+        self._modified_update()
 
     def set_status(self, status, donedate=None):
         old_status = self.status
