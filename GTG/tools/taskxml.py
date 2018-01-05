@@ -22,6 +22,7 @@ import xml.dom.minidom as minidom
 import xml.sax.saxutils as saxutils
 from datetime import datetime
 
+from GTG.info import VERSION
 from GTG.tools import cleanxml
 from GTG.tools.dates import Date
 
@@ -124,6 +125,7 @@ def task_to_xml(doc, task):
                          task.get_start_date().xml_str())
     cleanxml.addTextNode(doc, t_xml, "donedate",
                          task.get_closed_date().xml_str())
+    cleanxml.addTextNode(doc, t_xml, "version", VERSION);
     childs = task.get_children()
     for c in childs:
         cleanxml.addTextNode(doc, t_xml, "subtask", c)
