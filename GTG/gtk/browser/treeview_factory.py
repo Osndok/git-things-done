@@ -32,6 +32,13 @@ from liblarch_gtk import TreeView
 from GTG.gtk import colors
 from GTG.tools.dates import Date
 
+def reverse_if_descending(order, s):
+    """Make a cmp() result relative to the top instead of following
+        user-specified sort direction"""
+    if order == gtk.SORT_ASCENDING:
+        return s
+    else:
+        return -1 * s
 
 class TreeviewFactory():
 
@@ -139,18 +146,59 @@ class TreeviewFactory():
 
     def start_date_sorting(self, task1, task2, order):
         sort = self.__date_comp(task1, task2, 'start', order)
+        if not sort:
+            sort = self.last_modified_behind(task1, task2);
+        if not sort:
+            sort = self.tag_grouping(task1, task2, order);
+        #if not sort:
+        #    self.title_sorting(task1, task2, order);
         return sort
 
     def due_date_sorting(self, task1, task2, order):
-        sort = self.__date_comp(task1, task2, 'due', order)
+        sort = self.__date_comp(task1, task2, 'due', order);
+        if not sort:
+            sort = self.start_date_sorting(task1, task2, order);
+            # NB: start_date_sorting includes title sorting fallback.
         return sort
 
     def closed_date_sorting(self, task1, task2, order):
         sort = self.__date_comp(task1, task2, 'closed', order)
+        if not sort:
+            sort = self.last_modified_in_front(task1, task2);
+        #if not sort:
+        #    sort = self.tag_grouping(task1, task2, order);
+        #if not sort:
+        #    sort = self.title_sorting(task1, task2, order);
         return sort
 
     def title_sorting(self, task1, task2, order):
-        return cmp(task1.get_title(), task2.get_title())
+        # Looks like sorting by title never observed 'order'?
+        #return cmp(task1.get_title(), task2.get_title())
+        t1_title = task1.get_title()
+        t2_title = task2.get_title()
+        t1_title = locale.strxfrm(t1_title)
+        t2_title = locale.strxfrm(t2_title)
+        #return reverse_if_descending(order, cmp(t1_title, t2_title))
+        return cmp(t1_title, t2_title);
+
+    # Having recently-modified tasks on top can be good for when you have a few tasks that
+    # you bounce between, and would like for them all to be readily accessible.
+    def last_modified_in_front(self, task1, task2):
+        return cmp(task1.get_modified(), task2.get_modified())
+
+    # Having recently-modified tasks bury themselves can be good when you have a very-long
+    # todo list, and want it to 'churn'... or, to visit each one intermittantly, even if
+    # you can't really complete it at the moment.
+    def last_modified_behind(self, task1, task2):
+        return cmp(task1.get_modified(), task2.get_modified()) * -1
+
+    def tag_grouping(self, task1, task2, order):
+        # Group tasks with the same tag together for visual cleanness
+        t1_tags = task1.get_tags_name()
+        t1_tags.sort()
+        t2_tags = task2.get_tags_name()
+        t2_tags.sort()
+        return reverse_if_descending(order, cmp(t1_tags, t2_tags))
 
     def __date_comp(self, task1, task2, para, order):
         '''This is a quite complex method to sort tasks by date,
@@ -174,35 +222,10 @@ class TreeviewFactory():
             else:
                 raise ValueError(
                     'invalid date comparison parameter: %s') % para
-            sort = cmp(t2, t1)
+            #return reverse_if_descending(order, cmp(t2, t1))
+            return cmp(t2, t1);
         else:
-            sort = 0
-
-        # local function
-        def reverse_if_descending(s):
-            """Make a cmp() result relative to the top instead of following
-               user-specified sort direction"""
-            if order == gtk.SORT_ASCENDING:
-                return s
-            else:
-                return -1 * s
-
-        if sort == 0:
-        # Group tasks with the same tag together for visual cleanness
-            t1_tags = task1.get_tags_name()
-            t1_tags.sort()
-            t2_tags = task2.get_tags_name()
-            t2_tags.sort()
-            sort = reverse_if_descending(cmp(t1_tags, t2_tags))
-
-        if sort == 0:  # Break ties by sorting by title
-            t1_title = task1.get_title()
-            t2_title = task2.get_title()
-            t1_title = locale.strxfrm(t1_title)
-            t2_title = locale.strxfrm(t2_title)
-            sort = reverse_if_descending(cmp(t1_title, t2_title))
-
-        return sort
+            return 0;
 
     #############################
     # Functions for tags columns
