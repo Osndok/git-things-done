@@ -333,6 +333,6 @@ def signal_catcher(callback):
 initialize(app_name=info.NAME,
            message=
            _(
-             "%s %s has crashed. Please report the bug on <a href=\"%s\">our bug tracking page</a>." % (info.ACRONYM, info.VERSION)
+             "%s %s has crashed. Please report the bug on <a href=\"%s\">our bug tracking page</a>." % (info.ACRONYM, info.VERSION, REPORT_BUG_URL)
            ),
            use_apport=True)
