@@ -210,6 +210,7 @@ class TreeviewFactory():
                 t1 = task1.get_start_date()
                 t2 = task2.get_start_date()
             elif para == 'due':
+                #BUG: get_urgent_date() compares children, and the constraint one compares parents, and we are blindly blending the two together?!?!
                 t1 = task1.get_urgent_date()
                 t2 = task2.get_urgent_date()
                 if t1 == Date.no_date():
@@ -223,6 +224,7 @@ class TreeviewFactory():
                 raise ValueError(
                     'invalid date comparison parameter: %s') % para
             #return reverse_if_descending(order, cmp(t2, t1))
+            # Tricky! swapped is correct!?
             return cmp(t2, t1);
         else:
             return 0;
