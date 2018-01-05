@@ -72,6 +72,9 @@ class Task(TreeNode):
         self.attributes = {}
         self._modified_update()
 
+    def is_active(self):
+        return (self.status == self.STA_ACTIVE);
+
     def as_key_value_pairs(self):
         retval={
             "TaskId": self.tid,

@@ -138,24 +138,29 @@ class Requester(gobject.GObject):
         Log.debug("deleting task %s" % tid)
         return self.__basetree.del_node(tid, recursive=recursive)
 
-    def task_ids_from_title_keywords(self, words):
+    def tasks_from_title_keywords(self, words):
         bits = words.split(' ')
 
         # TODO: use all the kewords, not just the longest.
         longest=max(bits, key=len).lower();
 
-        retval=[]
+        active=[]
+        other=[]
 
         # Don't search for single-letter or empty strings, there will be too many matches
         if len(longest) > 1:
-            tasks = self.get_tasks_tree('active', False).get_all_nodes()
-            tasktree = self.get_main_view()
-            for task_id in tasks:
-                task = tasktree.get_node(task_id)
+            for task_id in self.ds.get_all_tasks():
+                task = self.ds.get_task(task_id);
                 if longest in task.get_title().lower():
-                    retval.append(task_id);
+                    if task.is_active():
+                        active.append(task);
+                    else:
+                        other.append(task)
 
-        return retval
+        if active:
+            return active;
+        else:
+            return other;
 
     ############### Tags ##########################
     ###############################################

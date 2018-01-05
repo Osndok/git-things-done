@@ -1644,6 +1644,7 @@ class TaskBrowser(gobject.GObject):
 
         self.search_possible_actions = {
             'add'    : _("Add Task"),
+            'closed' : _("Closed: %s"),
             'open'   : _("Open: %s"),
             'search' : _("Search"),
             'tag'    : _("Tag: %s"),
@@ -1695,9 +1696,13 @@ class TaskBrowser(gobject.GObject):
                 if lower_query in tag.lower():
                     self.search_actions.append(('tag', tag, tag));
 
-            for task_id in self.req.task_ids_from_title_keywords(query):
-                task_title=self.req.get_task(task_id).get_title();
-                self.search_actions.append(('open', task_id, task_title))
+            for task in self.req.tasks_from_title_keywords(query):
+                task_id=task.get_id();
+                task_title=task.get_title();
+                if task.is_active():
+                    self.search_actions.append(('open', task_id, task_title))
+                else:
+                    self.search_actions.append(('closed', task_id, task_title))
 
             self.search_actions.append(('add', query, None))
 
@@ -1735,7 +1740,7 @@ class TaskBrowser(gobject.GObject):
             self.on_quickadd_activate(None)
         elif action == 'command':
             print('GTG/core/search.py defines SEARCH_COMMANDS... what do they do?');
-        elif action == 'open':
+        elif action == 'open' or action == 'closed':
             self.vmanager.open_task(_id)
             self.quickadd_entry.set_text('')
         elif action == 'search':
