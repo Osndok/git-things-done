@@ -157,6 +157,7 @@ class Task(TreeNode):
         else:
             return False
 
+    # was: set_complex_title
     def populate_from_single_line_of_text(self, text, tags=[]):
         if tags:
             assert(isinstance(tags[0], str))
