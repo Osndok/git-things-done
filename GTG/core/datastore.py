@@ -211,6 +211,8 @@ class DataStore(object):
         tagfile = os.path.join(CoreConfig().get_data_dir(), TAG_XMLFILE)
         doc, xmlstore = cleanxml.openxmlfile(tagfile, TAG_XMLROOT)
         for t in xmlstore.childNodes:
+            if t.nodeType == t.TEXT_NODE:
+                continue;
             tagname = t.getAttribute("name")
             parent = t.getAttribute("parent")
 
