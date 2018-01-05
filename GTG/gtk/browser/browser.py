@@ -1715,7 +1715,7 @@ class TaskBrowser(gobject.GObject):
                     string=format_string % argument;
                 else:
                     string=format_string;
-                self.search_completion.insert_action_markup(i, string)
+                self.search_completion.insert_action_text(i, string)
 
     def expand_search_tag(self):
         """ For some unknown reason, search tag is not expanded correctly and
