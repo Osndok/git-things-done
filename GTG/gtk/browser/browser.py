@@ -46,6 +46,9 @@ from GTG.tools.dates import Date
 from GTG.tools.logger import Log
 
 
+def maybe_truncate(_string, cutoff=120):
+    return _string[:cutoff]+'...' if len(_string)>cutoff else _string
+
 class Timer:
 
     def __init__(self, name):
@@ -1700,9 +1703,9 @@ class TaskBrowser(gobject.GObject):
                 task_id=task.get_id();
                 task_title=task.get_title();
                 if task.is_active():
-                    self.search_actions.append(('open', task_id, task_title))
+                    self.search_actions.append(('open', task_id, maybe_truncate(task_title)))
                 else:
-                    self.search_actions.append(('closed', task_id, task_title))
+                    self.search_actions.append(('closed', task_id, maybe_truncate(task_title)))
 
             self.search_actions.append(('add', query, None))
 
