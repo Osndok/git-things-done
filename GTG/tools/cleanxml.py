@@ -57,17 +57,6 @@ def cleanNode(currentNode, indent, newl):
         for node in currentNode.childNodes:
             cleanNode(node, indent, newl)
 
-
-def cleanString(string, indent="", newl=""):
-    # we will remove the pretty XML stuffs.
-    # Firt, we remove the \n and tab in elements
-    e = re.compile('>\n\t*')
-    toreturn = e.sub('>', string)
-    # then we remove the \n tab before closing elements
-    f = re.compile('\n\t*</')
-    toreturn = f.sub('</', toreturn)
-    return toreturn
-
 # This add a text node to the node parent. We don't return anything
 # Because the doc object itself is modified.
 
@@ -94,7 +83,6 @@ def _try_openxmlfile(zefile, root):
     """ Open an XML file and clean whitespaces in it """
     f = open(zefile, "r")
     stringed = f.read()
-    stringed = cleanString(stringed, tab, enter)
     doc = xml.dom.minidom.parseString(stringed)
     cleanDoc(doc, tab, enter)
     xmlproject = doc.getElementsByTagName(root)[0]
