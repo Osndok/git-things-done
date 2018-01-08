@@ -41,6 +41,15 @@ from GTG.tools import cleanxml
 from GTG.tools.borg import Borg
 from GTG.tools.logger import Log
 
+def tagfile_sort_key(xmlTagNode):
+    query=xmlTagNode.getAttribute("query");
+    if query:
+        return "query:%s"%(query);
+    name=xmlTagNode.getAttribute("name");
+    parent=xmlTagNode.getAttribute("parent");
+    if parent:
+        return "tag:%s:%s"%(parent,name);
+    return "tag:%s"%(name);
 
 class DataStore(object):
     """
@@ -237,6 +246,7 @@ class DataStore(object):
     def save_tagtree(self):
         """ Saves the tag tree to an XML file """
         if not self.tagfile:
+            #print("WARNING: Unable to save tagtree, as tagfile has not been opened");
             return
 
         doc, xmlroot = cleanxml.emptydoc(TAG_XMLROOT)
@@ -266,6 +276,7 @@ class DataStore(object):
             xmlroot.appendChild(t_xml)
             already_saved.append(tagname)
 
+        xmlroot.childNodes.sort(key=tagfile_sort_key);
         cleanxml.savexml(self.tagfile, doc, backup=True)
 
     ### Tasks functions #######################################################
