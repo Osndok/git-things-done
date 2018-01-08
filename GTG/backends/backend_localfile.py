@@ -165,6 +165,7 @@ class Backend(GenericBackend):
         for node in self.xmlproj.childNodes:
             if node.nodeName == TASK_NODE and node.getAttribute("id") == tid:
                 existing = node
+                break;
 
         modified = False
         # We then replace the existing node
@@ -176,6 +177,7 @@ class Backend(GenericBackend):
         # If the node doesn't exist, we create it
         else:
             self.xmlproj.appendChild(t_xml)
+            self._resort_tasks();
             modified = True
 
         # if the XML object has changed, we save it to file
@@ -197,3 +199,9 @@ class Backend(GenericBackend):
         # We save the XML file only if it's necessary
         if modified:
             cleanxml.savexml(self.get_path(), self.doc, backup=True)
+
+    # This function lets us keep our xml file in a deterministic order.
+    def _resort_tasks(self):
+        self.xmlproj.childNodes.sort(key=lambda x: x.getAttribute("id"));
+
+
