@@ -37,25 +37,21 @@ BACKUP_NBR = 7
 
 def cleanDoc(document, indent="", newl=""):
     node = document.documentElement
-    cleanNode(node, indent, newl)
+    cleanNode(node, indent+newl)
 
 
-def cleanNode(currentNode, indent, newl):
-    myfilter = indent + newl
+def cleanNode(currentNode, myfilter):
     if currentNode.hasChildNodes:
         toremove = []
         for node in currentNode.childNodes:
             if node.nodeType == 3:
-                val = node.nodeValue #.lstrip(myfilter).strip(myfilter)
-                if val == "":
+                # Remove nodes that are only whitespace
+                if not node.nodeValue.strip(myfilter):
                     toremove.append(node)
-                else:
-                    node.nodeValue = val
-        # now we remove the nodes that were empty
         for n in toremove:
             currentNode.removeChild(n)
         for node in currentNode.childNodes:
-            cleanNode(node, indent, newl)
+            cleanNode(node, myfilter)
 
 # This add a text node to the node parent. We don't return anything
 # Because the doc object itself is modified.
