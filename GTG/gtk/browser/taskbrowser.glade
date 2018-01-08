@@ -969,7 +969,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkImageMenuItem" id="tcm_add_subtask">
-        <property name="label" translatable="yes">Blocked by...</property>
+        <property name="label" translatable="yes">But first... (new subtask)</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
@@ -982,7 +982,7 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
     </child>
     <child>
       <object class="GtkImageMenuItem" id="tcm_add_supertask">
-        <property name="label" translatable="yes">Blocks...</property>
+        <property name="label" translatable="yes">And then... (new parent)</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
