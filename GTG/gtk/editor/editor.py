@@ -176,7 +176,7 @@ class TaskEditor:
         self.pengine.onTaskLoad(self.plugin_api)
 
         # Putting the refresh callback at the end make the start a lot faster
-        self.textview.refresh_callback(self.refresh_editor)
+        self.textview.refresh_callback(self._textview_changes_title)
         self.refresh_editor()
         self.textview.grab_focus()
 
@@ -235,6 +235,15 @@ class TaskEditor:
         key, mod = gtk.accelerator_parse('<Control>i')
         dismiss_editor.add_accelerator('clicked', agr, key, mod,
                                        gtk.ACCEL_VISIBLE)
+
+    def _textview_changes_title(self, title):
+        self.refresh_editor(title);
+        self.task.sync();
+        editors=self.vmanager.get_opened_editors();
+        for parent_id in self.task.get_parents():
+            if parent_id in editors:
+                parent_editor=editors[parent_id];
+                parent_editor.textview.notice_subtask_title_change(self.task, title);
 
     # Can be called at any time to reflect the status of the Task
     # Refresh should never interfere with the TaskView.

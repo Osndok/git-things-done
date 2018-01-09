@@ -186,6 +186,7 @@ class TaskView(gtk.TextView):
         self.buff.insert_at_cursor(selection.data)
         self.modified(full=True)
         self.stop_emission('drag-data-received')
+        # TODO: could accept a Task to create a subtask link (and open the door to circular links)
 
     # editable means that the user can edit the taskview
     # this is initially set at False and then to True once the editor window
@@ -990,6 +991,16 @@ class TaskView(gtk.TextView):
         endm = self.insert_indent(self.buff, itera, 1, enter=enter)
         end = self.buff.get_iter_at_mark(endm)
         self.buff.place_cursor(end)
+
+    def notice_subtask_title_change(self, subtask, new_title):
+        subtask_id=subtask.get_id();
+        print("ERROR: taskview subtask title changed: %s -> %s"%(subtask_id, new_title));
+        #TODO: change subtask title in open window: gtg://b703cb81-b236-49fa-a870-a2a8da86315b
+
+    def notice_subtask_removal(self, subtask):
+        subtask_id=subtask.get_id();
+        print("ERROR: subtask removed from open taskview: %s -> '%s'"%(subtask_id, subtask.get_title()));
+        #TODO: remove subtask from an open window: gtg://a33bf33d-c929-49f2-a54c-e0685cf2af31
 
     def insert_indent(self, buff, start_i, level, enter=True):
         # We will close the current subtask tag

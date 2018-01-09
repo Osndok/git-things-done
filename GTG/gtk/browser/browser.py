@@ -1096,7 +1096,15 @@ class TaskBrowser(gobject.GObject):
             if task is None:
                 print("Error: cannot find task %s" % task_id);
             else:
+                self.remove_subtask_from_open_parent_tasks(task);
                 task.set_parent(None);
+
+    def remove_subtask_from_open_parent_tasks(self, task):
+        editors=self.vmanager.get_opened_editors();
+        for parent_id in task.get_parents():
+            if parent_id in editors:
+                parent_editor=editors[parent_id];
+                parent_editor.textview.notice_subtask_removal(task);
 
     def update_start_date(self, widget, new_start_date):
         tasks = [self.req.get_task(uid)
