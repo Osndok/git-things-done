@@ -38,6 +38,8 @@ from webbrowser import open as openurl
 from GTG.gtk.editor import taskviewserial
 from GTG.tools import urlregex
 
+from time import time
+
 separators = [' ', ',', '\n', '\t', '!', '?', ';', '\0', '(', ')']
 # those separators are only separators if followed by a space. Else, they
 # are part of the word
@@ -388,6 +390,8 @@ class TaskView(gtk.TextView):
             buff.delete_mark(s)
             buff.delete_mark(e)
 
+        #BUG? no _apply_title() equivalent? what is the subtask is open?
+
     def create_indent_tag(self, buff, level):
 
         tag = buff.create_tag(None, **self.get_property('indent'))
@@ -522,7 +526,13 @@ class TaskView(gtk.TextView):
         if full or self.is_at_title(buff, cursor_iter):
             # The apply title is very expensive because
             # It involves refreshing the whole task tree
+            # REH: *OR*... it might just be updating the window title?
+            start=time()
             title_end = self._apply_title(buff, refresheditor)
+            diff=time()-start;
+            if diff > 0.02:
+                print("taskview._apply_title() took %f seconds"%(diff));
+            # REH: doesn't seem all that expensive to me...
 
         if full:
             local_start = title_end.copy()
@@ -623,7 +633,8 @@ class TaskView(gtk.TextView):
                     it.forward_chars(m.end())
                     buff.apply_tag(texttag, prev, it)
 
-            elif text in ["bug", "lp", "bgo", "fdo", "bko"]:
+            # TODO: BUG: Probably to ugly & use-case-specific to keep... disabling for now :(
+            elif False and text in ["bug", "lp", "bgo", "fdo", "bko"]:
                 if it.get_char() == " ":
                     it.forward_char()
                 if it.get_char() == "#":
@@ -1067,7 +1078,7 @@ class TaskView(gtk.TextView):
         clip = gtk.clipboard_get(gdk.SELECTION_CLIPBOARD)
 
         # First, we analyse the selection to put in our own
-        # GTG clipboard a selection with description of subtasks
+        # GTG clipboard a selection with description of subtasks
         bounds = self.buff.get_selection_bounds()
         if not bounds:
             return
