@@ -60,11 +60,6 @@ def task_from_xml(task, xmlnode):
     startdate = Date(read_node(xmlnode, "startdate"))
     task.set_start_date(startdate)
 
-    modified = read_node(xmlnode, "modified")
-    if modified != "":
-        modified = datetime.strptime(modified, "%Y-%m-%dT%H:%M:%S")
-        task.set_modified(modified)
-
     tags = xmlnode.getAttribute("tags").replace(' ', '')
     tags = (tag for tag in tags.split(',') if tag.strip() != "")
     for tag in tags:
@@ -104,11 +99,18 @@ def task_from_xml(task, xmlnode):
             task.add_remote_id(backend_id, remote_task_id)
             '''
 
+    # NB: The modification timestamp should be the *LAST* attribute set,
+    # because many of the others will mark the task as modified.
+    modified = read_node(xmlnode, "modified")
+    if modified != "":
+        modified = datetime.strptime(modified, "%Y-%m-%dT%H:%M:%S")
+        task.set_modified(modified)
+
     return task
+
 
 # FIXME maybe pretty XML should be enough for this...
 # Task as parameter the doc where to put the XML node
-
 
 def task_to_xml(doc, task):
     t_xml = doc.createElement("task")
