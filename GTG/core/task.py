@@ -59,6 +59,7 @@ class Task(TreeNode):
         self.closed_date = Date.no_date()
         self.due_date = Date.no_date()
         self.start_date = Date.no_date()
+        self.created = datetime.now()
         self.can_be_deleted = newtask
         # tags
         self.tags = []
@@ -81,6 +82,7 @@ class Task(TreeNode):
             "Title" : self.title,
             "Status": self.status,
             "DateModified": self.get_modified_string(),
+            "DateCreated": self.get_created_string(),
         };
         if self.tags:
             retval["Tags"]=self.get_tagline();
@@ -288,6 +290,9 @@ class Task(TreeNode):
 
     def get_modified_string(self):
         return self.last_modified.strftime("%Y-%m-%dT%H:%M:%S")
+
+    def get_created_string(self):
+        return self.created.strftime("%Y-%m-%dT%H:%M:%S")
 
     def set_modified(self, modified):
         self.last_modified = modified

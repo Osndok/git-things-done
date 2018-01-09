@@ -99,10 +99,14 @@ def task_from_xml(task, xmlnode):
             task.add_remote_id(backend_id, remote_task_id)
             '''
 
+    created = read_node(xmlnode, "created")
+    if created:
+        task.created=datetime.strptime(created, "%Y-%m-%dT%H:%M:%S");
+
     # NB: The modification timestamp should be the *LAST* attribute set,
     # because many of the others will mark the task as modified.
     modified = read_node(xmlnode, "modified")
-    if modified != "":
+    if modified:
         modified = datetime.strptime(modified, "%Y-%m-%dT%H:%M:%S")
         task.set_modified(modified)
 
@@ -123,6 +127,7 @@ def task_to_xml(doc, task):
     cleanxml.addTextNode(doc, t_xml, "title", task.get_title())
     cleanxml.addTextNode(doc, t_xml, "duedate", task.get_due_date().xml_str())
     cleanxml.addTextNode(doc, t_xml, "modified", task.get_modified_string())
+    cleanxml.addTextNode(doc, t_xml, "created", task.get_created_string())
     cleanxml.addTextNode(doc, t_xml, "startdate",
                          task.get_start_date().xml_str())
     cleanxml.addTextNode(doc, t_xml, "donedate",
