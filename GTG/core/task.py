@@ -70,7 +70,7 @@ class Task(TreeNode):
 #        if self.loaded:
 #            self.req._task_loaded(self.tid)
         self.attributes = {}
-        self._modified_update()
+        self._has_been_modified()
 
     def is_active(self):
         return (self.status == self.STA_ACTIVE);
@@ -106,8 +106,9 @@ class Task(TreeNode):
 
     def set_to_keep(self):
         self.can_be_deleted = False
-        #!!!: set_to_keep is called when *OPENING* a task editor window... which is not the same as *MODIFYING* a task.
-        #self._modified_update()
+        #!!!: set_to_keep is called when *OPENING* a task editor window... 
+        # Opening a task is *NOT* the same as *MODIFYING* a task.
+        #self._has_been_modified()
 
     def is_new(self):
         return self.can_be_deleted
@@ -133,7 +134,8 @@ class Task(TreeNode):
         @param task_remote_id: the id for this task in the backend backend_id
         '''
         self.remote_ids[str(backend_id)] = str(task_remote_id)
-        self._modified_update()
+        # BUG: nervous
+        self._has_been_modified()
 
     def get_title(self):
         return self.title
@@ -151,9 +153,10 @@ class Task(TreeNode):
         if not title:
             self.title = self.UNTITLED;
 
-        self._modified_update()
         # Avoid unnecessary sync
         if self.title != old_title:
+            self.can_be_deleted = False
+            self._has_been_modified()
             self.sync()
             return True
         else:
@@ -226,10 +229,14 @@ class Task(TreeNode):
 
         self.set_due_date(due_date)
         self.set_start_date(defer_date)
-        self._modified_update()
+        self._has_been_modified()
 
     def set_status(self, status, donedate=None):
         old_status = self.status
+
+        if status == old_status:
+            return;
+
         self.can_be_deleted = False
         # No need to update children or whatever if the task is not loaded
         if status and self.is_loaded():
@@ -270,7 +277,7 @@ class Task(TreeNode):
             else:
                 self.closed_date = Date.today()
 
-        self._modified_update()
+        self._has_been_modified()
         self.sync()
 
     def get_status(self):
@@ -391,7 +398,7 @@ class Task(TreeNode):
         # If the date changed, we notify the change for the children since the
         # constraints might have changed
         if old_due_date != new_duedate_obj:
-            self._modified_update()
+            self._has_been_modified()
             self.recursive_sync()
 
     def get_due_date(self):
@@ -459,7 +466,9 @@ class Task(TreeNode):
             not self.due_date.is_fuzzy() and \
                 Date(fulldate) > self.due_date:
             self.set_due_date(fulldate)
-            self._modified_update()
+        else:
+            # BUG: nervous
+            self._has_been_modified()
         self.sync()
 
     def get_start_date(self):
@@ -472,8 +481,8 @@ class Task(TreeNode):
     # dates.
     def set_closed_date(self, fulldate):
         self.closed_date = Date(fulldate)
-        self._modified_update()
-        self.sync()
+        # BUG: nervouse
+        self._has_been_modified()
 
     def get_closed_date(self):
         return self.closed_date
@@ -549,17 +558,20 @@ class Task(TreeNode):
 
     def set_text(self, texte):
         self.can_be_deleted = False
-        if texte != "<content/>":
+
+        if texte == "<content/>":
+            self.content = ''
+        elif texte != self.content:
             # defensive programmation to filter bad formatted tasks
             if not texte.startswith("<content>"):
+                print("WARNING: task.set_text() was given non-xml content (possibly with xml entities)");
                 texte = cgi.escape(texte, quote=True)
                 texte = "<content>%s" % texte
             if not texte.endswith("</content>"):
                 texte = "%s</content>" % texte
             self.content = str(texte)
-        else:
-            self.content = ''
-        self._modified_update()
+
+            self._has_been_modified()
 
     ### SUBTASKS #############################################################
     #
@@ -570,7 +582,7 @@ class Task(TreeNode):
         subt = self.req.new_task(newtask=True)
         # we use the inherited childrens
         self.add_child(subt.get_id())
-        self._modified_update()
+        self._has_been_modified()
         return subt
 
     def add_child(self, tid):
@@ -589,7 +601,7 @@ class Task(TreeNode):
             child.set_due_date(self.get_due_date())
             for t in self.get_tags():
                 child.add_tag(t.get_name())
-        self._modified_update()
+        self._has_been_modified()
         self.sync()
         return True
 
@@ -602,7 +614,7 @@ class Task(TreeNode):
         c.remove_parent(self.get_id())
         if c.can_be_deleted:
             self.req.delete_task(tid)
-            self._modified_update()
+            self._has_been_modified()
             self.sync()
             return True
         else:
@@ -626,15 +638,6 @@ class Task(TreeNode):
                     i.get_self_and_all_subtasks(active_only, tasks)
         return tasks
 
-    def get_subtask(self, tid):
-        # FIXME : remove this function. This is not useful
-        print "DEPRECATED: get_subtask"
-        """Return the task corresponding to a given ID.
-
-        @param tid: the ID of the task to return.
-        """
-        return self.req.get_task(tid)
-
     # Called whenever one task is dropped onto another one (for organization)
     def set_parent(self, parent_id):
         """Update the task's parent. Refresh due date constraints."""
@@ -651,7 +654,7 @@ class Task(TreeNode):
             for tag in par.get_tag_names():
                 self.add_tag(tag);
 
-        self._modified_update()
+        self._has_been_modified()
         self.recursive_sync()
 
     def set_attribute(self, att_name, att_value, namespace=""):
@@ -663,8 +666,7 @@ class Task(TreeNode):
         """
         val = unicode(str(att_value), "UTF-8")
         self.attributes[(namespace, att_name)] = val
-        self._modified_update()
-        self.sync()
+        self._has_been_modified()
 
     def get_attribute(self, att_name, namespace=""):
         """Get the attribute C{att_name}.
@@ -673,8 +675,8 @@ class Task(TreeNode):
         """
         return self.attributes.get((namespace, att_name), None)
 
+    # Informs the liblarch nervous system that the data to display has changed.
     def sync(self):
-        #!: self._modified_update()
         if self.is_loaded():
             # This is a liblarch call to the TreeNode ancestor
             self.modified()
@@ -683,8 +685,10 @@ class Task(TreeNode):
             return False
 
     # Updates the modified timestamp
-    def _modified_update(self):
+    def _has_been_modified(self):
         self.last_modified = datetime.now()
+        self.sync()
+
 
 ### TAG FUNCTIONS ############################################################
 #
@@ -721,7 +725,7 @@ class Task(TreeNode):
         oldt.modified()
         self.tag_added(new)
         self.req.get_tag(new).modified()
-        self._modified_update()
+        self._has_been_modified()
         self.sync()
 
     def tag_added(self, tagname):
@@ -766,10 +770,8 @@ class Task(TreeNode):
 
             self.content = "<content><tag>%s</tag>%s%s</content>" % (
                 tagname, sep, c)
-            # we modify the task internal state, thus we have to call for a
-            # sync
-            self._modified_update()
-            self.sync()
+
+            self._has_been_modified()
 
     # remove a tag from this task by the tag's name
     def remove_tag(self, tagname):
@@ -782,7 +784,7 @@ class Task(TreeNode):
                     child.remove_tag(tagname)
         self.content = self._strip_tag(self.content, tagname)
         if modified:
-            self._modified_update()
+            self._has_been_modified()
             tag = self.req.get_tag(tagname)
             # The ViewCount of the tag still doesn't know that
             # the task was removed. We need to update manually
@@ -797,12 +799,15 @@ class Task(TreeNode):
         '''
         for tag in self.get_tag_names():
             try:
+                # BUG: why not test something like: "if tag.id in tags_list:" ?
                 tags_list.remove(tag)
             except:
                 self.remove_tag(tag)
         for tag in tags_list:
             self.add_tag(tag)
-        self._modified_update()
+
+        # BUG: too nervous
+        self._has_been_modified()
 
     def _strip_tag(self, text, tagname, newtag=''):
         return (text
