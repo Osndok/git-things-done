@@ -136,8 +136,9 @@ class PreferencesDialog:
 
     def _refresh_task_browser(self):
         """ Refresh tasks in task browser """
-        task_tree = self.req.get_tasks_tree(refresh=False).get_basetree()
-        task_tree.refresh_all()
+        #task_tree = self.req.get_tasks_tree(refresh=False).get_basetree()
+        #!!!: task_tree.refresh_all() [MODIFIES ALL TASKS]
+        print("ERROR: cannot call: browser.refresh_all_views() from here?");
 
     def activate(self):
         """ Activate the preferences dialog."""

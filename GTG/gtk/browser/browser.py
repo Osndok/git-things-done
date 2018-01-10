@@ -604,15 +604,20 @@ class TaskBrowser(gobject.GObject):
         elif notebook.get_n_pages() == 0:
             notebook.hide()
 
-    def refresh_all_views(self, timer):
-        active_tree = self.req.get_tasks_tree(name='active', refresh=False)
-        active_tree.refresh_all()
-
-        workview_tree = self.req.get_tasks_tree(name='workview', refresh=False)
-        workview_tree.refresh_all()
-
-        closed_tree = self.req.get_tasks_tree(name='closed', refresh=False)
-        closed_tree.refresh_all()
+    def refresh_all_views(self, timer=None):
+        try:
+            rect=self.window.get_frame_extents();
+            self.window.invalidate_rect(rect, True);
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+        # FAIL: calling refresh_all() *DOES* repaint the window, but it also rewrites/touches/modifies
+        # ALL THE TASKS IN THE DATASTORE
+        #active_tree = self.req.get_tasks_tree(name='active', refresh=False)
+        #active_tree.refresh_all()
+        #workview_tree = self.req.get_tasks_tree(name='workview', refresh=False)
+        #workview_tree.refresh_all()
+        #closed_tree = self.req.get_tasks_tree(name='closed', refresh=False)
+        #closed_tree.refresh_all()
 
 ### SIGNAL CALLBACKS ##########################################################
 # Typically, reaction to user input & interactions with the GUI

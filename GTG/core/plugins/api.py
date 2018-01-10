@@ -215,7 +215,7 @@ class PluginAPI:
 
         for pane in browser.vtree_panes.itervalues():
             pane.set_bg_color(func, 'bg_color')
-            pane.basetree.get_basetree().refresh_all()
+            browser.refresh_all_views();
 
 #=== file saving/loading =====================================================
     def load_configuration_object(self, plugin_name, filename,
