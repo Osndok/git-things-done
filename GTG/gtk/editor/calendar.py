@@ -186,7 +186,7 @@ class GTGCalendar(gobject.GObject):
         # but that's better than the aweful alternatives of:
         # (1) "since when & why am I dragging a document into the calendar", and
         # (2) "why did clicking on this date open the link that was under the date"
-        gtk.timeout_add(300, self.__maybe_close_calendar)
+        gtk.timeout_add(500, self.__maybe_close_calendar)
 
     def __maybe_close_calendar(self):
         if self.__is_user_just_browsing_the_calendar:
