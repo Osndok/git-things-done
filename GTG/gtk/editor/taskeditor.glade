@@ -4,8 +4,8 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="TaskEditor">
     <property name="title" translatable="yes">Task</property>
-    <property name="default_width">748</property>
-    <property name="default_height">726</property>
+    <property name="default_width">600</property>
+    <property name="default_height">563</property>
     <signal name="configure_event" handler="on_move"/>
     <child>
       <object class="GtkVBox" id="vbox4">
