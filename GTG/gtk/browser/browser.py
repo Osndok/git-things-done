@@ -29,6 +29,7 @@ import pygtk
 pygtk.require('2.0')
 import gobject
 import gtk
+import sys
 
 # our own imports
 from GTG import _, info, ngettext
