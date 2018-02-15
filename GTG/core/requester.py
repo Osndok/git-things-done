@@ -140,27 +140,50 @@ class Requester(gobject.GObject):
 
     def tasks_from_title_keywords(self, words):
         bits = words.split(' ')
+        bits.sort(key=len, reverse=True)
 
-        # TODO: use all the kewords, not just the longest.
-        longest=max(bits, key=len).lower();
+        longest=bits[0];
 
-        active=[]
-        other=[]
+        remaining=[]
 
         # Don't search for single-letter or empty strings, there will be too many matches
-        if len(longest) > 1:
-            for task_id in self.ds.get_all_tasks():
-                task = self.ds.get_task(task_id);
-                if longest in task.get_title().lower():
-                    if task.is_active():
-                        active.append(task);
-                    else:
-                        other.append(task)
+        if len(longest) <= 1:
+            return [];
 
-        if active:
-            return active;
+        for task_id in self.ds.get_all_tasks():
+            remaining.append(self.ds.get_task(task_id))
+
+        if not remaining:
+            return [];
+
+        while bits:
+            longest=bits.pop(0);
+            filtered=[]
+
+            for task in remaining:
+                if longest in task.get_title().lower():
+                    filtered.append(task);
+
+            # Ignore those search terms that would cause an empty results list
+            if filtered:
+                remaining=filtered;
+
+        # If we still have "results to spare", kern out the inactive ones....
+        if len(remaining) > 5:
+            active=[]
+            other=[]
+            for task in remaining:
+                if task.is_active():
+                    active.append(task);
+                else:
+                    other.append(task)
+
+            if active:
+                return active;
+            else:
+                return other;
         else:
-            return other;
+            return remaining;
 
     ############### Tags ##########################
     ###############################################
