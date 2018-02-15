@@ -44,8 +44,8 @@ class hamsterPlugin:
                                    " to the selected task")
     BUFFER_TIME = 60  # secs
     PLUGIN_PATH = os.path.dirname(os.path.abspath(__file__))
-    IMG_START_PATH = "icons/hicolor/32x32/hamster-activity-start.png"
-    IMG_STOP_PATH = "icons/hicolor/32x32/hamster-activity-stop.png"
+    IMG_START_PATH = "icons/hicolor/svg/gtd-hamster-activity-start.svg"
+    IMG_STOP_PATH = "icons/hicolor/svg/gtd-hamster-activity-stop.svg"
 
     def __init__(self):
         # task editor widget
