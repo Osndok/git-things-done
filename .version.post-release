@@ -4,6 +4,6 @@ git archive --format=tar --prefix=git-things-done-${VERSION}/ HEAD | gzip > ~/rp
 
 for SPEC in *.spec
 do
-	rpmbuild -ba $SPEC
+	rpmbuild -ba --clean $SPEC
 done
 
