@@ -131,12 +131,19 @@ class Date(object):
         """ Map date into real date, i.e. convert fuzzy dates """
         if self.is_fuzzy():
             # More expensive than it needs to be...
+            # Originally, "NOW" was today (which makes logical sense) and "NEXT"
+            # was set as "Tomorrow" (+1; the minimal increment), but after having
+            # so many tasks overdue, due "today", and "now"... approaching deadlines
+            # are too easily missed until we are right on top of them. So until such
+            # a time as a full estimation system is in place, we'll try for a smoother
+            # & more predictable fuzzy date spread (rather than a wholly logical one).
+            daysTillNext=5;
             FUNCS = {
                 NOW    : datetime.date.today(),
-                NEXT   : datetime.date.today() + datetime.timedelta(1),
-                SOONER : datetime.date.today() + datetime.timedelta(7),
-                SOON   : datetime.date.today() + datetime.timedelta(15),
-                SOONISH: datetime.date.today() + datetime.timedelta(25),
+                NEXT   : datetime.date.today() + datetime.timedelta(daysTillNext),
+                SOONER : datetime.date.today() + datetime.timedelta(daysTillNext*2),
+                SOON   : datetime.date.today() + datetime.timedelta(daysTillNext*3),
+                SOONISH: datetime.date.today() + datetime.timedelta(daysTillNext*4),
                 NODATE : datetime.date.max - datetime.timedelta(2),
                 LATER  : datetime.date.max - datetime.timedelta(1),
                 SOMEDAY: datetime.date.max,
