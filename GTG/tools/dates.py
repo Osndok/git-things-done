@@ -27,6 +27,7 @@ Date.parse() parses all possible representations of a date. """
 import calendar
 import datetime
 import locale
+import re
 
 from GTG import _, ngettext
 
@@ -344,9 +345,45 @@ class Date(object):
     @classmethod
     def _parse_text_representation(cls, string):
         """ Match common text representation for date """
-        today = datetime.date.today()
 
-        # accepted date formats
+        today = datetime.date.today()
+        inverter = 1;
+
+        # BUG: mostly english-centric.
+        # TODO: consider using 'timestring' as the core date parser (wrong values for negatives or week/month qualifiers).
+        if string.startswith('-'):
+            inverter=-1;
+            string=string[1:];
+
+        if string.startswith('+'):
+            string=string[1:];
+
+        if string.endswith(' ago'):
+            inverter=-1;
+            string=string[:-4];
+
+        if string.endswith(' from now'):
+            string=string[:-9];
+
+        # Did they just specify a number of days?
+        if string.isdigit():
+            return today + datetime.timedelta(int(string)*inverter);
+
+        numericPart=re.sub('[^0-9]', '', string);
+
+        if numericPart:
+            if string.endswith('d') or 'day' in string:
+                return today + datetime.timedelta(int(numericPart)*inverter);
+            if string.endswith('w') or 'week' in string:
+                return today + datetime.timedelta(int(numericPart)*7*inverter);
+            if string.endswith('m') or 'month' in string:
+                return today + datetime.timedelta(int(numericPart)*30*inverter);
+            if string.endswith('y') or 'year' in string:
+                return today + datetime.timedelta(int(numericPart)*365*inverter);
+            print "WARN: likely not understanding numeric qualifiers: "+string;
+
+        # NB: Hereafter is mostly upstream, and supports localization.
+
         formats = {
             'yday': -1,
             _('yesterday').lower(): -1,
@@ -362,17 +399,45 @@ class Date(object):
             _('next year').lower(): 365 + int(calendar.isleap(today.year)),
         }
 
-        # add week day names in the current locale
+        # If they just type a day name, assume it is in the future
         for i, (english, local) in enumerate([
-            ("Monday", _("Monday")),
-            ("Tuesday", _("Tuesday")),
+            ("Monday"   , _("Monday")),
+            ("Tuesday"  , _("Tuesday")),
             ("Wednesday", _("Wednesday")),
-            ("Thursday", _("Thursday")),
-            ("Friday", _("Friday")),
-            ("Saturday", _("Saturday")),
-            ("Sunday", _("Sunday")),
+            ("Thursday" , _("Thursday")),
+            ("Friday"   , _("Friday")),
+            ("Saturday" , _("Saturday")),
+            ("Sunday"   , _("Sunday")),
         ]):
             offset = i - today.weekday() + 7 * int(i <= today.weekday())
+            formats[english.lower()] = offset
+            formats[local.lower()] = offset
+
+        # But if they say 'next X' and 'X' already would be in the future, add a week.
+        for i, (english, local) in enumerate([
+            ("Next Monday"   , _("Next Monday")),
+            ("Next Tuesday"  , _("Next Tuesday")),
+            ("Next Wednesday", _("Next Wednesday")),
+            ("Next Thursday" , _("Next Thursday")),
+            ("Next Friday"   , _("Next Friday")),
+            ("Next Saturday" , _("Next Saturday")),
+            ("Next Sunday"   , _("Next Sunday")),
+        ]):
+            offset = i - today.weekday() + 7 * int(i <= today.weekday()) + (7 if i> today.weekday() else 0)
+            formats[english.lower()] = offset
+            formats[local.lower()] = offset
+
+        # ...and 'last X' implies the past, of course.
+        for i, (english, local) in enumerate([
+            ("Last Monday"   , _("Last Monday")),
+            ("Last Tuesday"  , _("Last Tuesday")),
+            ("Last Wednesday", _("Last Wednesday")),
+            ("Last Thursday" , _("Last Thursday")),
+            ("Last Friday"   , _("Last Friday")),
+            ("Last Saturday" , _("Last Saturday")),
+            ("Last Sunday"   , _("Last Sunday")),
+        ]):
+            offset = i - today.weekday() + 7 * int(i <= today.weekday()) - (7 if i> today.weekday() else 0)
             formats[english.lower()] = offset
             formats[local.lower()] = offset
 
