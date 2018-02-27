@@ -348,6 +348,8 @@ class Date(object):
 
         # accepted date formats
         formats = {
+            'yday': -1,
+            _('yesterday').lower(): -1,
             'today': 0,
             _('today').lower(): 0,
             'tomorrow': 1,
