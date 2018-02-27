@@ -294,6 +294,7 @@ class TaskBrowser(gobject.GObject):
             self.on_set_due_next_month,
             "on_set_due_next_year":
             self.on_set_due_next_year,
+            "on_set_due_asap"   : self.on_set_due_asap,
             "on_set_due_now"    : self.on_set_due_now,
             "on_set_due_next"   : self.on_set_due_next,
             "on_set_due_sooner" : self.on_set_due_sooner,
@@ -1166,6 +1167,9 @@ class TaskBrowser(gobject.GObject):
 
     def on_set_due_next_year(self, widget):
         self.update_due_date(widget, "next year")
+
+    def on_set_due_asap(self, widget):
+        self.update_due_date(widget, "asap")
 
     def on_set_due_now(self, widget):
         self.update_due_date(widget, "now")

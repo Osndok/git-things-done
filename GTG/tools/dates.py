@@ -32,9 +32,10 @@ from GTG import _, ngettext
 
 __all__ = 'Date',
 
-NOW, NEXT, SOONER, SOON, SOONISH, LATER, SOMEDAY, NODATE = range(8)
+ASAP, NOW, NEXT, SOONER, SOON, SOONISH, LATER, SOMEDAY, NODATE = range(9)
 # strings representing fuzzy dates + no date
 ENGLISH_STRINGS = {
+    ASAP: 'asap',
     NOW: 'now',
     NEXT:    'next',
     SOONER:  'sooner',
@@ -46,6 +47,7 @@ ENGLISH_STRINGS = {
 }
 
 STRINGS = {
+    ASAP: _('asap'),
     NOW: _('now'),
     NEXT:    _('next'),
     SOONER:  _('sooner'),
@@ -57,6 +59,7 @@ STRINGS = {
 }
 
 LOOKUP = {
+    'asap'   : ASAP   , _('asap'   ).lower(): ASAP,
     'now'    : NOW    , _('now'    ).lower(): NOW,
     'next'   : NEXT   , _('next'   ).lower(): NEXT,
     'sooner' : SOONER , _('sooner' ).lower(): SOONER,
@@ -139,6 +142,7 @@ class Date(object):
             # & more predictable fuzzy date spread (rather than a wholly logical one).
             daysTillNext=5;
             FUNCS = {
+                ASAP   : datetime.date.min,
                 NOW    : datetime.date.today(),
                 NEXT   : datetime.date.today() + datetime.timedelta(daysTillNext),
                 SOONER : datetime.date.today() + datetime.timedelta(daysTillNext*2),
@@ -238,6 +242,11 @@ class Date(object):
     def tomorrow(cls):
         """ Return date for tomorrow """
         return Date(datetime.date.today() + datetime.timedelta(1))
+
+    @classmethod
+    def asap(cls):
+        """ Return date representing fuzzy date: asap """
+        return Date(ASAP)
 
     @classmethod
     def now(cls):

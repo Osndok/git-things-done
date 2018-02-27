@@ -1228,6 +1228,17 @@ Bertrand Rousseau (bertrand.rousseau@gmail.com)</property>
               </object>
             </child>
             <child>
+              <object class="GtkImageMenuItem" id="tcm_due_asap">
+                <property name="label" translatable="yes">_ASAP</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="use_stock">False</property>
+                <signal name="activate" handler="on_set_due_asap" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="tcm_due_now">
                 <property name="label" translatable="yes">_Now</property>
                 <property name="visible">True</property>
