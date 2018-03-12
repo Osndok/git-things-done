@@ -497,12 +497,26 @@ class Date(object):
             return _('Today')
         elif days_left < 0:
             abs_days = abs(days_left)
+            relative_threshold=3*7;
+            if abs_days > relative_threshold:
+                return self._real_date.isoformat()
+            if abs_days > 365:
+                return ngettext('1 year ago', '%(years)d years ago', abs_days/365) % \
+                {'years': abs_days/365}
+            if abs_days > 60:
+                return ngettext('1 month ago', '%(months)d months ago', abs_days/30.5) % \
+                {'months': abs_days/30.5}
+            if abs_days > 14:
+                return ngettext('1 week ago', '%(weeks)d weeks ago', abs_days/7) % \
+                {'weeks': abs_days/7}
             return ngettext('Yesterday', '%(days)d days ago', abs_days) % \
                 {'days': abs_days}
         elif days_left > 0 and days_left <= 15:
             return ngettext('Tomorrow', 'In %(days)d days', days_left) % \
                 {'days': days_left}
         else:
+            return self._real_date.isoformat();
+            """
             locale_format = locale.nl_langinfo(locale.D_FMT)
             if calendar.isleap(datetime.date.today().year):
                 year_len = 366
@@ -513,3 +527,6 @@ class Date(object):
                 locale_format = locale_format.replace('/%Y', '')
                 locale_format = locale_format.replace('.%Y', '.')
             return self._real_date.strftime(locale_format)
+            """
+
+
