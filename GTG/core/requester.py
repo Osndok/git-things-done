@@ -150,6 +150,7 @@ class Requester(gobject.GObject):
         if len(longest) <= 1:
             return [];
 
+        # TODO: If we are going to (eventually) scale-up, then we probably shouldn't be loading all the tasks into memory...
         for task_id in self.ds.get_all_tasks():
             remaining.append(self.ds.get_task(task_id))
 
