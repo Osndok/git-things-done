@@ -17,7 +17,7 @@
 import gtk
 from GTG.tools.dates import Date
 from GTG import _
-
+from GTG.core.task import Task
 
 class notToday:
 
@@ -31,10 +31,6 @@ class notToday:
         self._init_gtk()
         self.plugin_api.set_active_selection_changed_callback(
             self.selection_changed)
-
-    def deactivate(self, plugin_api):
-        """ Removes the gtk widgets before quitting """
-        self._gtk_deactivate()
 
     def mark_not_today(self, button):
         start_date = Date.parse("tomorrow")
@@ -63,8 +59,32 @@ class notToday:
         self.tb_button.show()
         self.plugin_api.add_toolbar_item(self.tb_button)
 
-    def _gtk_deactivate(self):
+    def onTaskOpened(self, plugin_api):
+        # get the opened task
+        task = plugin_api.get_ui().get_task()
+
+        if task.get_status() == Task.STA_ACTIVE:
+            # add button
+            self.taskbutton = gtk.ToolButton()
+            #self.decide_button_mode(self.taskbutton, task)
+            self.taskbutton.connect('clicked', self.task_cb, plugin_api, task)
+            self.taskbutton.set_tooltip_text(_("Do it tomorrow"));
+            self.taskbutton.set_icon_name("document-revert")
+            self.taskbutton.show()
+            plugin_api.add_toolbar_item(self.taskbutton)
+
+    def task_cb(self, widget, plugin_api, task):
+        start_date = Date.parse("tomorrow")
+        task.set_start_date(start_date)
+        plugin_api.get_view_manager().close_task(task.get_id())
+
+    def deactivate(self, plugin_api):
         """ Remove Toolbar Button """
-        if self.tb_button:
-            self.plugin_api.remove_toolbar_item(self.tb_button)
-            self.tb_button = False
+        if plugin_api.is_browser():
+            if self.tb_button:
+                self.plugin_api.remove_toolbar_item(self.tb_button)
+                self.tb_button = False
+        else:
+            if self.taskbutton:
+                self.plugin_api.remove_toolbar_item(self.taskbutton)
+                self.taskbutton = False
