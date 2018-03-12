@@ -153,6 +153,8 @@ class Requester(gobject.GObject):
         for task_id in self.ds.get_all_tasks():
             remaining.append(self.ds.get_task(task_id))
 
+        total_num_tasks=len(remaining)
+
         if not remaining:
             return [];
 
@@ -164,9 +166,15 @@ class Requester(gobject.GObject):
                 if longest in task.get_title().lower():
                     filtered.append(task);
 
-            # Ignore those search terms that would cause an empty results list
+            # Ignore those search terms that would cause an empty results list...
             if filtered:
                 remaining=filtered;
+
+        # ... unless we find that we have selected 'all of the tasks', which probably
+        # indicates that all of the search terms had no match... in which the expected
+        # behavior is to return an *EMPTY* set... not a *FULL* set.
+        if len(remaining) == total_num_tasks:
+            return [];
 
         # If we still have "results to spare", kern out the inactive ones....
         if len(remaining) > 5:
