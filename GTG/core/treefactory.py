@@ -88,7 +88,7 @@ class TreeFactory:
         notag_tag.set_attribute("special", "notag")
         notag_tag.set_attribute("label", "<span weight='bold'>%s</span>" % _("Untagged"))
         notag_tag.set_attribute("icon", "gtd-tags-none")
-        notag_tag.set_attribute("order", 2)
+        notag_tag.set_attribute("order", 1)
         tagtree.add_node(notag_tag)
         p = {}
         self.tasktree.add_filter(CoreConfig.NOTAG_TAG,
@@ -100,7 +100,7 @@ class TreeFactory:
         search_tag.set_attribute("label",
                                  "<span weight='bold'>%s</span>" % _("Search"))
         search_tag.set_attribute("icon", "search")
-        search_tag.set_attribute("order", 1)
+        search_tag.set_attribute("order", 2)
         tagtree.add_node(search_tag)
         p = {}
         self.tasktree.add_filter(CoreConfig.SEARCH_TAG,
