@@ -531,7 +531,7 @@ class TaskView(gtk.TextView):
             start=time()
             title_end = self._apply_title(buff, refresheditor)
             diff=time()-start;
-            if diff > 0.02:
+            if diff > 0.04:
                 print("taskview._apply_title() took %f seconds"%(diff));
             # REH: doesn't seem all that expensive to me...
 
