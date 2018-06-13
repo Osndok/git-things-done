@@ -23,6 +23,7 @@
 # system imports
 import time
 import threading
+import traceback
 from webbrowser import open as openurl
 
 import pygtk
@@ -611,7 +612,8 @@ class TaskBrowser(gobject.GObject):
             rect=self.window.get_frame_extents();
             self.window.invalidate_rect(rect, True);
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected view-refresh error:", sys.exc_info()[0]
+            traceback.print_exc()
         # FAIL: calling refresh_all() *DOES* repaint the window, but it also rewrites/touches/modifies
         # ALL THE TASKS IN THE DATASTORE
         #active_tree = self.req.get_tasks_tree(name='active', refresh=False)
