@@ -70,7 +70,7 @@ class notToday:
         self.tb_button.set_sensitive(False)
         self.tb_button.set_icon_name("document-revert")
         self.tb_button.set_is_important(True)
-        do_it_tomorrow=_("Do it tomorrow");
+        do_it_tomorrow=_("Tomorrow");
         self.tb_button.set_label(do_it_tomorrow);
         self.tb_button.set_tooltip_text(do_it_tomorrow);
         self.tb_button.connect('clicked', self.mark_not_today)
@@ -81,7 +81,7 @@ class notToday:
         self.tb_button2.set_sensitive(False)
         self.tb_button2.set_icon_name("media-skip-forward")
         self.tb_button2.set_is_important(True)
-        next_week=_("Defer Till Next Week");
+        next_week=_("Next Week");
         self.tb_button2.set_label(next_week);
         self.tb_button2.set_tooltip_text(do_it_tomorrow);
         self.tb_button2.connect('clicked', self.mark_next_week)
@@ -97,7 +97,7 @@ class notToday:
             self.taskbutton = gtk.ToolButton()
             #self.decide_button_mode(self.taskbutton, task)
             self.taskbutton.connect('clicked', self.task_cb, plugin_api, task)
-            self.taskbutton.set_tooltip_text(_("Do it tomorrow"));
+            self.taskbutton.set_tooltip_text(_("Tomorrow"));
             self.taskbutton.set_icon_name("document-revert")
             self.taskbutton.show()
             plugin_api.add_toolbar_item(self.taskbutton)
@@ -105,7 +105,7 @@ class notToday:
             self.taskbutton2 = gtk.ToolButton()
             #self.decide_button_mode(self.taskbutton2, task)
             self.taskbutton2.connect('clicked', self.task_cb2, plugin_api, task)
-            self.taskbutton2.set_tooltip_text(_("Defer Till Next Week"));
+            self.taskbutton2.set_tooltip_text(_("Next Week"));
             self.taskbutton2.set_icon_name("media-skip-forward")
             self.taskbutton2.show()
             plugin_api.add_toolbar_item(self.taskbutton2)
