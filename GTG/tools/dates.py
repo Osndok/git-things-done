@@ -294,7 +294,7 @@ class Date(object):
         """ Parse next Xth day in month """
         try:
             mday = int(string)
-            if not 1 <= mday <= 31 or string.startswith('0'):
+            if not 1 <= mday <= 31 or string.startswith('0') or string.startswith('+'):
                 return None
         except ValueError:
             return None
