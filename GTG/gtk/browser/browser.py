@@ -260,102 +260,59 @@ class TaskBrowser(gobject.GObject):
         connects signals on UI elements
         """
         SIGNAL_CONNECTIONS_DIC = {
-            "on_add_task":
-            self.on_add_task,
-            "on_edit_active_task":
-            self.on_edit_active_task,
-            "on_edit_done_task":
-            self.on_edit_done_task,
-            "on_delete_task":
-            self.on_delete_tasks,
-            "on_liberate_tasks": self.on_liberate_tasks,
-            "on_modify_tags":
-            self.on_modify_tags,
-            "on_mark_as_done":
-            self.on_mark_as_done,
-            "on_mark_as_started":
-            self.on_mark_as_started,
-            "on_start_for_tomorrow":
-            self.on_start_for_tomorrow,
-            "on_start_for_next_week":
-            self.on_start_for_next_week,
-            "on_start_for_next_month":
-            self.on_start_for_next_month,
-            "on_start_for_next_year":
-            self.on_start_for_next_year,
-            "on_start_clear":
-            self.on_start_clear,
-            "on_set_due_today":
-            self.on_set_due_today,
-            "on_set_due_tomorrow":
-            self.on_set_due_tomorrow,
-            "on_set_due_next_week":
-            self.on_set_due_next_week,
-            "on_set_due_next_month":
-            self.on_set_due_next_month,
-            "on_set_due_next_year":
-            self.on_set_due_next_year,
-            "on_set_due_asap"   : self.on_set_due_asap,
-            "on_set_due_now"    : self.on_set_due_now,
-            "on_set_due_next"   : self.on_set_due_next,
-            "on_set_due_sooner" : self.on_set_due_sooner,
-            "on_set_due_soon"   : self.on_set_due_soon,
-            "on_set_due_soonish": self.on_set_due_soonish,
-            "on_set_due_later"  : self.on_set_due_later,
-            "on_set_due_someday": self.on_set_due_someday,
-            "on_set_due_clear":
-            self.on_set_due_clear,
-            "on_dismiss_task":
-            self.on_dismiss_task,
-            "on_move":
-            self.on_move,
-            "on_size_allocate":
-            self.on_size_allocate,
-            "gtk_main_quit":
-            self.on_close,
-            "on_add_subtask":
-            self.on_add_subtask,
-            "on_add_supertask": self.on_add_supertask,
-            "on_tagcontext_deactivate":
-            self.on_tagcontext_deactivate,
-            "on_workview_toggled":
-            self.on_workview_toggled,
-            "on_view_workview_toggled":
-            self.on_workview_toggled,
-            "on_view_closed_toggled":
-            self.on_closed_toggled,
-            "on_view_sidebar_toggled":
-            self.on_sidebar_toggled,
-            "on_quickadd_field_activate":
-            self.on_quickadd_activate,
-            "on_quickadd_field_icon_press":
-            self.on_quickadd_iconpress,
-            "on_quickadd_field_changed":
-            self.on_quickadd_changed,
-            "on_quickadd_entrycompletion_action_activated":
-            self.on_entrycompletion_action_activated,
-            "on_view_quickadd_toggled":
-            self.on_toggle_quickadd,
-            "on_view_toolbar_toggled":
-            self.on_toolbar_toggled,
-            "on_about_clicked":
-            self.on_about_clicked,
-            "on_about_delete":
-            self.on_about_close,
-            "on_about_close":
-            self.on_about_close,
-            "on_documentation_clicked":
-            lambda w: openurl(info.HELP_URI),
-            "on_translate_clicked":
-            lambda w: openurl(info.TRANSLATE_URL),
-            "on_report_bug_clicked":
-            lambda w: openurl(info.REPORT_BUG_URL),
-            "on_preferences_activate":
-            self.open_preferences,
-            "on_edit_plugins_activate":
-            self.open_plugins,
-            "on_edit_backends_activate":
-            self.open_edit_backends,
+            "on_add_task"              : self.on_add_task,
+            "on_edit_active_task"      : self.on_edit_active_task,
+            "on_edit_done_task"        : self.on_edit_done_task,
+            "on_delete_task"           : self.on_delete_tasks,
+            "on_liberate_tasks"        : self.on_liberate_tasks,
+            "on_modify_tags"           : self.on_modify_tags,
+            "on_mark_as_done"          : self.on_mark_as_done,
+            "on_mark_as_started"       : self.on_mark_as_started,
+            "on_start_for_tomorrow"    : self.on_start_for_tomorrow,
+            "on_start_for_next_week"   : self.on_start_for_next_week,
+            "on_start_for_next_month"  : self.on_start_for_next_month,
+            "on_start_for_next_year"   : self.on_start_for_next_year,
+            "on_start_clear"           : self.on_start_clear,
+            "on_set_due_today"         : self.on_set_due_today,
+            "on_set_due_tomorrow"      : self.on_set_due_tomorrow,
+            "on_set_due_next_week"     : self.on_set_due_next_week,
+            "on_set_due_next_month"    : self.on_set_due_next_month,
+            "on_set_due_next_year"     : self.on_set_due_next_year,
+            "on_set_due_asap"          : self.on_set_due_asap,
+            "on_set_due_now"           : self.on_set_due_now,
+            "on_set_due_next"          : self.on_set_due_next,
+            "on_set_due_sooner"        : self.on_set_due_sooner,
+            "on_set_due_soon"          : self.on_set_due_soon,
+            "on_set_due_soonish"       : self.on_set_due_soonish,
+            "on_set_due_later"         : self.on_set_due_later,
+            "on_set_due_someday"       : self.on_set_due_someday,
+            "on_set_due_clear"         : self.on_set_due_clear,
+            "on_dismiss_task"          : self.on_dismiss_task,
+            "on_move"                  : self.on_move,
+            "on_size_allocate"         : self.on_size_allocate,
+            "gtk_main_quit"            : self.on_close,
+            "on_add_subtask"           : self.on_add_subtask,
+            "on_add_supertask"         : self.on_add_supertask,
+            "on_tagcontext_deactivate" : self.on_tagcontext_deactivate,
+            "on_workview_toggled"      : self.on_workview_toggled,
+            "on_view_workview_toggled" : self.on_workview_toggled,
+            "on_view_closed_toggled"   : self.on_closed_toggled,
+            "on_view_sidebar_toggled"      : self.on_sidebar_toggled,
+            "on_quickadd_field_activate"   : self.on_quickadd_activate,
+            "on_quickadd_field_icon_press" : self.on_quickadd_iconpress,
+            "on_quickadd_field_changed"    : self.on_quickadd_changed,
+            "on_quickadd_entrycompletion_action_activated": self.on_entrycompletion_action_activated,
+            "on_view_quickadd_toggled"     : self.on_toggle_quickadd,
+            "on_view_toolbar_toggled"      : self.on_toolbar_toggled,
+            "on_about_clicked"             : self.on_about_clicked,
+            "on_about_delete"              : self.on_about_close,
+            "on_about_close"               : self.on_about_close,
+            "on_documentation_clicked"     : lambda w: openurl(info.HELP_URI),
+            "on_translate_clicked"         : lambda w: openurl(info.TRANSLATE_URL),
+            "on_report_bug_clicked"        : lambda w: openurl(info.REPORT_BUG_URL),
+            "on_preferences_activate"      : self.open_preferences,
+            "on_edit_plugins_activate"     : self.open_plugins,
+            "on_edit_backends_activate"    : self.open_edit_backends,
         }
         self.builder.connect_signals(SIGNAL_CONNECTIONS_DIC)
 
