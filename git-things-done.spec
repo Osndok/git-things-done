@@ -1,7 +1,7 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           git-things-done
-Version:        0.4.15
+Version:        0.4.16
 Release:        16%{?dist}
 Summary:        Personal organizer for the GNOME desktop
 
