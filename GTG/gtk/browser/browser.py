@@ -222,8 +222,8 @@ class TaskBrowser(gobject.GObject):
                 path = path[:-1]
             self.tagtreeview.expand_node(path)
 
-        # expanding search tag does not work automatically, request it
-        self.expand_search_tag()
+        # Even if we had the search tag open last session, start with it closed.
+        self.collapse_search_tag()
 
     def _init_toolbar_tooltips(self):
         """
@@ -1702,14 +1702,14 @@ class TaskBrowser(gobject.GObject):
                     string=format_string;
                 self.search_completion.insert_action_text(i, string)
 
-    def expand_search_tag(self):
+    def collapse_search_tag(self):
         """ For some unknown reason, search tag is not expanded correctly and
         it must be done manually """
         if self.tagtreeview is not None:
             model = self.tagtreeview.get_model()
             search_iter = model.my_get_iter((CoreConfig.SEARCH_TAG, ))
             search_path = model.get_path(search_iter)
-            self.tagtreeview.expand_row(search_path, False)
+            self.tagtreeview.collapse_row(search_path)
 
     def on_entrycompletion_action_activated(self, completion, index):
         """ Executes action from auto-completion (a menu-like selection, not quickadd enter) """
