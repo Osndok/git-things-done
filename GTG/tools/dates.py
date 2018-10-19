@@ -27,6 +27,7 @@ Date.parse() parses all possible representations of a date. """
 import calendar
 import datetime
 import locale
+import os
 import re
 
 from GTG import _, ngettext
@@ -153,6 +154,8 @@ class Date(object):
                 LATER  : datetime.date.max - datetime.timedelta(1),
                 SOMEDAY: datetime.date.max,
             }
+            if 'NODATE' in os.environ:
+                FUNCS[NODATE]=FUNCS[LOOKUP[os.environ['NODATE']]]
             return FUNCS[self._fuzzy]
         else:
             return self._real_date
