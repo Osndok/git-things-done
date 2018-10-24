@@ -29,7 +29,7 @@ HELP_URI = "help:gtg"
 TRANSLATE_URL = "https://github.com/Osndok/git-things-done/issues"
 REPORT_BUG_URL = "https://github.com/Osndok/git-things-done/issues"
 EMAIL = "git@osndok.com"
-VERSION='0.4.17'
+VERSION='0.4.18'
 
 SHORT_DESCRIPTION = \
     _('GTD is a personal tasks and TODO-list items organizer for the GNOME. It is a fork of GTG (Getting Things GNOME!) @ http://gtgnome.net')
