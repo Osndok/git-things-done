@@ -121,6 +121,10 @@ def main(options=None, args=None):
     ds, req = core_main_init(options, args)
     # Launch task browser
     manager = Manager(req)
+
+    if options.title is not None:
+        manager.browser.window.set_title(options.title)
+
     # main loop
     # To be more user friendly and get the logs of crashes, we show an apport
     # hooked window upon crashes
