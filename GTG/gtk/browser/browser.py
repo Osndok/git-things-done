@@ -1702,6 +1702,15 @@ class TaskBrowser(gobject.GObject):
                     string=format_string;
                 self.search_completion.insert_action_text(i, string)
 
+    def expand_search_tag(self):
+        """ For some unknown reason, search tag is not expanded correctly and
+        it must be done manually """
+        if self.tagtreeview is not None:
+            model = self.tagtreeview.get_model()
+            search_iter = model.my_get_iter((CoreConfig.SEARCH_TAG, ))
+            search_path = model.get_path(search_iter)
+            self.tagtreeview.expand_row(search_path, False)
+
     def collapse_search_tag(self):
         """ For some unknown reason, search tag is not expanded correctly and
         it must be done manually """
