@@ -1629,6 +1629,9 @@ class TaskBrowser(gobject.GObject):
             'search' : _("Search"),
             'tag'    : _("Tag: %s"),
             'command': _("Command: %s"),
+            'done'     : _("Done: %s"),
+            'dismissed': _("Dismissed: %s"),
+            'reopened' : _("Reopened: %s"),
         }
 
         self.search_actions = []
@@ -1681,8 +1684,10 @@ class TaskBrowser(gobject.GObject):
                 task_title=task.get_title();
                 if task.is_active():
                     self.search_actions.append(('open', task_id, maybe_truncate(task_title)))
+                elif task.status == 'Dismiss':
+                    self.search_actions.append(('dismissed', task_id, maybe_truncate(task_title)))
                 else:
-                    self.search_actions.append(('closed', task_id, maybe_truncate(task_title)))
+                    self.search_actions.append(('done', task_id, maybe_truncate(task_title)))
 
             self.search_actions.append(('add', query, None))
 
