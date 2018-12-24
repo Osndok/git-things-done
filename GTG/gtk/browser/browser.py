@@ -566,6 +566,7 @@ class TaskBrowser(gobject.GObject):
 
     def refresh_all_views(self, timer=None):
         try:
+            print "self.window is a: ", type(self.window).__name__
             rect=self.window.get_frame_extents();
             self.window.invalidate_rect(rect, True);
         except:
