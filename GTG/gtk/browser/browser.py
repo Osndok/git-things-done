@@ -1735,7 +1735,7 @@ class TaskBrowser(gobject.GObject):
             self.on_quickadd_activate(None)
         elif action == 'command':
             print('GTG/core/search.py defines SEARCH_COMMANDS... what do they do?');
-        elif action == 'open' or action == 'closed':
+        elif action == 'open' or action == 'closed' or action == 'done':
             self.vmanager.open_task(_id)
             self.quickadd_entry.set_text('')
         elif action == 'search':
